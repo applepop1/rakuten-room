@@ -8,147 +8,170 @@
 
 <style>
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        "Noto Sans JP",
-        sans-serif;
-    background: #f5f5f5;
-    color: #333;
+  margin: 0;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Noto Sans JP",
+    sans-serif;
+  background: #f5f5f5;
+  color: #333;
 }
 
+/* ヘッダー */
 header {
-    background: #bf0000;
-    color: white;
-    padding: 25px 20px;
-    text-align: center;
+  background: #bf0000;
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
 }
 
 header h1 {
-    margin: 0;
-    font-size: 28px;
+  margin: 0 0 10px;
+  font-size: 28px;
 }
 
 header p {
-    margin: 10px 0 0;
+  margin: 0;
+  font-size: 16px;
 }
 
+/* メイン */
 .container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 30px 20px;
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 0 20px;
 }
 
+/* 検索 */
 .search-box {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  margin-bottom: 25px;
 }
 
-.search-box input {
-    flex: 1;
-    padding: 15px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+.search-box h2 {
+  margin-top: 0;
 }
 
-.search-box button {
-    background: #bf0000;
-    color: white;
-    border: none;
-    padding: 0 25px;
-    font-size: 16px;
-    border-radius: 6px;
-    cursor: pointer;
+.search-area {
+  display: flex;
+  gap: 10px;
 }
 
-.search-box button:hover {
-    background: #990000;
+.search-area input {
+  flex: 1;
+  padding: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
 }
 
-.message {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #666;
+.search-area button {
+  padding: 14px 25px;
+  background: #bf0000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-.products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    gap: 20px;
+.search-area button:hover {
+  background: #990000;
 }
 
+/* 商品一覧 */
+#products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+/* 商品カード */
 .product {
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,.08);
-    transition: .2s;
-}
-
-.product:hover {
-    transform: translateY(-3px);
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  display: flex;
+  flex-direction: column;
 }
 
 .product img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    background: #eee;
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  background: #fff;
+  padding: 10px;
 }
 
 .product-info {
-    padding: 15px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .product-name {
-    font-size: 15px;
-    line-height: 1.6;
-    height: 72px;
-    overflow: hidden;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 1.5;
+  margin-bottom: 10px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .price {
-    color: #bf0000;
-    font-size: 20px;
-    font-weight: bold;
-    margin: 12px 0;
+  color: #bf0000;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
 .product a {
-    display: block;
-    background: #bf0000;
-    color: white;
-    text-align: center;
-    padding: 12px;
-    text-decoration: none;
-    border-radius: 5px;
+  display: block;
+  margin-top: auto;
+  text-align: center;
+  padding: 12px;
+  background: #bf0000;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
 }
 
 .product a:hover {
-    background: #990000;
+  background: #990000;
+}
+
+.message {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  grid-column: 1 / -1;
 }
 
 @media (max-width: 600px) {
 
-    header h1 {
-        font-size: 22px;
-    }
+  .search-area {
+    flex-direction: column;
+  }
 
-    .search-box {
-        flex-direction: column;
-    }
-
-    .search-box button {
-        padding: 15px;
-    }
+  header h1 {
+    font-size: 24px;
+  }
 
 }
 </style>
@@ -157,63 +180,309 @@ header p {
 <body>
 
 <header>
-    <h1>楽天ROOMおすすめ商品</h1>
-    <p>おすすめの商品を検索・紹介します</p>
+  <h1>楽天ROOMおすすめ商品</h1>
+  <p>楽天ROOMで紹介しているおすすめ商品</p>
 </header>
 
 <div class="container">
 
-    <div class="search-box">
-        <input
-            type="text"
-            id="keyword"
-            placeholder="商品を検索 例：バッグ、スニーカー、家電"
-        >
+  <div class="search-box">
 
-        <button onclick="searchProducts()">
-            商品を検索
-        </button>
-    </div>
+    <h2>商品を検索</h2>
 
-    <div class="message" id="message">
-        キーワードを入力して商品を検索してください
-    </div>
+    <div class="search-area">
 
-    <div class="products" id="products">
+      <input
+        type="text"
+        id="keyword"
+        placeholder="例：スニーカー、バッグ、家電"
+      >
+
+      <button onclick="searchProducts()">
+        検索
+      </button>
 
     </div>
+
+  </div>
+
+  <div id="products">
+
+    <div class="message">
+      キーワードを入力して「検索」を押してください。
+    </div>
+
+  </div>
 
 </div>
 
+
 <script>
 
-function searchProducts() {
+/*
+========================================
+楽天API設定
+========================================
 
-    const keyword = document.getElementById("keyword").value;
+楽天Developersで取得した
 
-    if (!keyword) {
-        alert("検索したい商品を入力してください");
-        return;
+・Application ID
+・Access Key
+・Affiliate ID
+
+を入力します。
+*/
+
+
+const APPLICATION_ID = "f64145f4-4f98-43f5-b5dc-9e32e0288ac7";
+const ACCESS_KEY = "pk_2sAMPPGr558LmSwtj0Xcz16t2sF5lQ2RB7RLOwra29g";
+const AFFILIATE_ID = "063c8ea8.35c06fea.063c8ea9.c69ca856";
+
+
+/*
+========================================
+商品検索
+========================================
+*/
+
+async function searchProducts() {
+
+  const keyword =
+    document
+      .getElementById("keyword")
+      .value
+      .trim();
+
+
+  if (!keyword) {
+
+    alert("検索キーワードを入力してください。");
+
+    return;
+
+  }
+
+
+  const products =
+    document.getElementById("products");
+
+
+  products.innerHTML =
+    `<div class="message">
+      商品を検索しています...
+    </div>`;
+
+
+  /*
+  楽天市場 商品検索API
+  */
+
+  const url =
+    "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701" +
+    "?format=json" +
+    "&applicationId=" +
+    encodeURIComponent(APPLICATION_ID) +
+    "&accessKey=" +
+    encodeURIComponent(ACCESS_KEY) +
+    "&affiliateId=" +
+    encodeURIComponent(AFFILIATE_ID) +
+    "&keyword=" +
+    encodeURIComponent(keyword) +
+    "&hits=20" +
+    "&page=1" +
+    "&availability=1";
+
+
+  try {
+
+    const response =
+      await fetch(url);
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "APIエラー：" +
+        response.status
+      );
+
     }
 
-    document.getElementById("message").textContent =
-        "「" + keyword + "」の商品を検索しています...";
 
-    /*
-    次の段階で、
-    ここに楽天市場APIとの接続処理を追加します。
-    */
+    const data =
+      await response.json();
 
-    setTimeout(() => {
 
-        document.getElementById("message").textContent =
-            "楽天API接続準備中です。「" +
-            keyword +
-            "」の検索機能を作成できます。";
+    const items =
+      data.Items ||
+      [];
 
-    }, 500);
+
+    if (items.length === 0) {
+
+      products.innerHTML =
+        `<div class="message">
+          商品が見つかりませんでした。
+        </div>`;
+
+      return;
+
+    }
+
+
+    products.innerHTML = "";
+
+
+    items.forEach(item => {
+
+      const product =
+        item.Item ||
+        item;
+
+
+      const itemName =
+        product.itemName ||
+        "商品名なし";
+
+
+      const itemPrice =
+        product.itemPrice
+          ? Number(
+              product.itemPrice
+            ).toLocaleString()
+          : "";
+
+
+      const itemUrl =
+        product.affiliateUrl ||
+        product.itemUrl ||
+        "#";
+
+
+      let imageUrl = "";
+
+
+      if (
+        product.mediumImageUrls &&
+        product.mediumImageUrls.length > 0
+      ) {
+
+        imageUrl =
+          product.mediumImageUrls[0]
+            .imageUrl;
+
+      }
+
+
+      const card =
+        document.createElement("div");
+
+
+      card.className =
+        "product";
+
+
+      card.innerHTML = `
+
+        <img
+          src="${imageUrl}"
+          alt="${escapeHtml(itemName)}"
+        >
+
+        <div class="product-info">
+
+          <div class="product-name">
+
+            ${escapeHtml(itemName)}
+
+          </div>
+
+
+          <div class="price">
+
+            ${itemPrice}円
+
+          </div>
+
+
+          <a
+            href="${itemUrl}"
+            target="_blank"
+            rel="noopener"
+          >
+
+            楽天市場で見る
+
+          </a>
+
+        </div>
+
+      `;
+
+
+      products.appendChild(card);
+
+    });
+
+
+  }
+  catch (error) {
+
+    console.error(error);
+
+
+    products.innerHTML =
+      `<div class="message">
+
+        商品を取得できませんでした。<br><br>
+
+        ${escapeHtml(error.message)}
+
+      </div>`;
+
+  }
 
 }
+
+
+/*
+========================================
+HTMLエスケープ
+========================================
+*/
+
+function escapeHtml(text) {
+
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+/*
+Enterキーでも検索
+*/
+
+document
+  .getElementById("keyword")
+  .addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        searchProducts();
+
+      }
+
+    }
+  );
 
 </script>
 
