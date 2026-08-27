@@ -2,10 +2,210 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>楽天ROOMおすすめ商品</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans JP",
+        sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    header {
+      background: #bf0000;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .notice {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .product-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #eeeeee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-name {
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .product-price {
+      color: #bf0000;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .product-link {
+      display: block;
+      text-align: center;
+      background: #bf0000;
+      color: white;
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 6px;
+    }
+
+    .product-link:hover {
+      opacity: 0.85;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #777;
+    }
+  </style>
 </head>
+
 <body>
+
+<header>
   <h1>楽天ROOMおすすめ商品</h1>
-  <p>楽天ROOMで紹介しているおすすめ商品を掲載しています。</p>
+  <p>楽天ROOMで紹介しているおすすめ商品</p>
+</header>
+
+<main>
+
+  <div class="notice">
+    <strong>おすすめ商品一覧</strong><br>
+    ここに楽天ROOMで紹介している商品を表示します。
+  </div>
+
+  <div id="products" class="products">
+
+    <!-- 商品はここに自動表示されます -->
+
+  </div>
+
+</main>
+
+<footer>
+  楽天ROOMおすすめ商品
+</footer>
+
+<script>
+
+const products = [
+
+  {
+    name: "楽天ROOMおすすめ商品",
+    price: "商品情報を取得予定",
+    image: "",
+    url: "#"
+  }
+
+];
+
+
+const container = document.getElementById("products");
+
+
+products.forEach(product => {
+
+  const card = document.createElement("div");
+
+  card.className = "product";
+
+  card.innerHTML = `
+
+    <div class="product-image">
+
+      ${
+        product.image
+          ? `<img src="${product.image}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;">`
+          : "商品画像"
+      }
+
+    </div>
+
+    <div class="product-info">
+
+      <div class="product-name">
+        ${product.name}
+      </div>
+
+      <div class="product-price">
+        ${product.price}
+      </div>
+
+      <a
+        href="${product.url}"
+        class="product-link"
+        target="_blank"
+        rel="noopener"
+      >
+        楽天市場で見る
+      </a>
+
+    </div>
+
+  `;
+
+  container.appendChild(card);
+
+});
+
+</script>
+
 </body>
 </html>
