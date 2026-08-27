@@ -2,7 +2,6 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // 楽天商品検索API
     if (url.pathname === "/api/search") {
       const keyword = url.searchParams.get("keyword");
 
@@ -20,47 +19,29 @@ export default {
         );
       }
 
-      // 楽天API URL
+      // 楽天市場商品検索API
       const apiUrl =
-        "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601" +
+        "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701" +
         "?applicationId=" + encodeURIComponent(env.RAKUTEN_APPLICATION_ID) +
+        "&accessKey=" + encodeURIComponent(env.RAKUTEN_ACCESS_KEY) +
         "&affiliateId=" + encodeURIComponent(env.RAKUTEN_AFFILIATE_ID || "") +
         "&keyword=" + encodeURIComponent(keyword) +
-        "&hits=20";
+        "&hits=20" +
+        "&format=json";
 
       try {
         const response = await fetch(apiUrl);
 
-        // 楽天APIから返ってきた内容を取得
-        const text = await response.text();
+        const data = await response.json();
 
-        // JSONに変換
-        let data;
-
-        try {
-          data = JSON.parse(text);
-        } catch (e) {
-          return Response.json(
-            {
-              error: "楽天APIから正しいJSONが返されませんでした",
-              details: text
-            },
-            {
-              status: 500,
-              headers: {
-                "Access-Control-Allow-Origin": "*"
-              }
-            }
-          );
-        }
-
-        // 楽天APIがエラーを返した場合
+        // 楽天APIエラー
         if (!response.ok) {
           return Response.json(
             {
-              error: "楽天APIエラー",
-              status: response.status,
-              details: data
+              error: data.error || "楽天APIエラー",
+              error_description:
+                data.error_description || "詳細不明",
+              status: response.status
             },
             {
               status: response.status,
@@ -71,7 +52,6 @@ export default {
           );
         }
 
-        // 正常終了
         return Response.json(data, {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -80,7 +60,6 @@ export default {
         });
 
       } catch (error) {
-
         return Response.json(
           {
             error: "楽天APIへの接続に失敗しました",
@@ -96,7 +75,6 @@ export default {
       }
     }
 
-    // その他のアクセス
     return new Response("Rakuten ROOM API Worker", {
       status: 200
     });
