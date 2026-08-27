@@ -20,14 +20,14 @@ export default {
       }
 
       // 楽天市場商品検索API
-      const apiUrl =
-        "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701" +
-        "?applicationId=" + encodeURIComponent(env.RAKUTEN_APPLICATION_ID) +
-        "&accessKey=" + encodeURIComponent(env.RAKUTEN_ACCESS_KEY) +
-        "&affiliateId=" + encodeURIComponent(env.RAKUTEN_AFFILIATE_ID || "") +
-        "&keyword=" + encodeURIComponent(keyword) +
-        "&hits=20" +
-        "&format=json";
+const apiUrl =
+  "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701" +
+  "?applicationId=" + encodeURIComponent(env.RAKUTEN_APPLICATION_ID) +
+  "&accessKey=" + encodeURIComponent(env.RAKUTEN_ACCESS_KEY) +
+  "&affiliateId=" + encodeURIComponent(env.RAKUTEN_AFFILIATE_ID) +
+  "&keyword=" + encodeURIComponent(keyword) +
+  "&hits=20" +
+  "&format=json";
 
       try {
         const response = await fetch(apiUrl);
