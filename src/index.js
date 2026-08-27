@@ -19,29 +19,73 @@ export default {
         );
       }
 
-      // 楽天市場商品検索API
-const apiUrl =
-  "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701" +
-  "?applicationId=" + encodeURIComponent(env.RAKUTEN_APPLICATION_ID) +
-  "&accessKey=" + encodeURIComponent(env.RAKUTEN_ACCESS_KEY) +
-  "&affiliateId=" + encodeURIComponent(env.RAKUTEN_AFFILIATE_ID) +
-  "&keyword=" + encodeURIComponent(keyword) +
-  "&hits=20" +
-  "&format=json";
+      if (!env.RAKUTEN_APPLICATION_ID) {
+        return Response.json(
+          {
+            error: "RAKUTEN_APPLICATION_ID が設定されていません"
+          },
+          {
+            status: 500,
+            headers: {
+              "Access-Control-Allow-Origin": "*"
+            }
+          }
+        );
+      }
+
+      if (!env.RAKUTEN_ACCESS_KEY) {
+        return Response.json(
+          {
+            error: "RAKUTEN_ACCESS_KEY が設定されていません"
+          },
+          {
+            status: 500,
+            headers: {
+              "Access-Control-Allow-Origin": "*"
+            }
+          }
+        );
+      }
+
+      const apiUrl =
+        "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701" +
+        "?applicationId=" + encodeURIComponent(env.RAKUTEN_APPLICATION_ID) +
+        "&accessKey=" + encodeURIComponent(env.RAKUTEN_ACCESS_KEY) +
+        "&keyword=" + encodeURIComponent(keyword) +
+        "&hits=20" +
+        "&format=json";
 
       try {
         const response = await fetch(apiUrl);
 
-        const data = await response.json();
+        const responseText = await response.text();
 
-        // 楽天APIエラー
+        let data;
+
+        try {
+          data = JSON.parse(responseText);
+        } catch {
+          return Response.json(
+            {
+              error: "楽天APIからJSON以外のデータが返されました",
+              status: response.status,
+              details: responseText
+            },
+            {
+              status: response.status,
+              headers: {
+                "Access-Control-Allow-Origin": "*"
+              }
+            }
+          );
+        }
+
         if (!response.ok) {
           return Response.json(
             {
-              error: data.error || "楽天APIエラー",
-              error_description:
-                data.error_description || "詳細不明",
-              status: response.status
+              error: "楽天APIエラー",
+              status: response.status,
+              details: data
             },
             {
               status: response.status,
@@ -63,7 +107,8 @@ const apiUrl =
         return Response.json(
           {
             error: "楽天APIへの接続に失敗しました",
-            details: error.message
+            details: error.message,
+            stack: error.stack
           },
           {
             status: 500,
