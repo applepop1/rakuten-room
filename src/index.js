@@ -14,24 +14,56 @@ export default {
         });
       }
 
-      try {
-        const apiUrl =
-          "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601" +
-          "?applicationId=" + env.RAKUTEN_APPLICATION_ID +
-          "&accessKey=" + env.RAKUTEN_ACCESS_KEY +
-          "&affiliateId=" + env.RAKUTEN_AFFILIATE_ID +
-          "&keyword=" + encodeURIComponent(keyword) +
-          "&hits=20";
+try {
+  if (!env.RAKUTEN_APPLICATION_ID) {
+    return Response.json({
+      error: "RAKUTEN_APPLICATION_ID が設定されていません"
+    }, { status: 500 });
+  }
 
-        const response = await fetch(apiUrl);
-        const data = await response.json();
+  if (!env.RAKUTEN_ACCESS_KEY) {
+    return Response.json({
+      error: "RAKUTEN_ACCESS_KEY が設定されていません"
+    }, { status: 500 });
+  }
 
-        return Response.json(data, {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json"
-          }
-        });
+  let apiUrl =
+    "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601" +
+    "?applicationId=" + encodeURIComponent(env.RAKUTEN_APPLICATION_ID) +
+    "&accessKey=" + encodeURIComponent(env.RAKUTEN_ACCESS_KEY) +
+    "&keyword=" + encodeURIComponent(keyword) +
+    "&hits=20";
+
+  if (env.RAKUTEN_AFFILIATE_ID) {
+    apiUrl +=
+      "&affiliateId=" +
+      encodeURIComponent(env.RAKUTEN_AFFILIATE_ID);
+  }
+
+  const response = await fetch(apiUrl);
+  const data = await response.json();
+
+  if (!response.ok) {
+    return Response.json({
+      error: "楽天APIエラー",
+      status: response.status,
+      details: data
+    }, { status: response.status });
+  }
+
+  return Response.json(data, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json"
+    }
+  });
+
+} catch (error) {
+  return Response.json({
+    error: "楽天APIへの接続中にエラーが発生しました",
+    details: error.message
+  }, { status: 500 });
+}
 
       } catch (error) {
         return Response.json({
