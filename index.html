@@ -1,209 +1,219 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>楽天ROOMおすすめ商品</title>
+<title>楽天ROOMおすすめ商品</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* {
+    box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      font-family:
+body {
+    margin: 0;
+    font-family:
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
         "Noto Sans JP",
         sans-serif;
-      background: #f5f5f5;
-      color: #333;
-    }
+    background: #f5f5f5;
+    color: #333;
+}
 
-    header {
-      background: #bf0000;
-      color: white;
-      padding: 30px 20px;
-      text-align: center;
-    }
+header {
+    background: #bf0000;
+    color: white;
+    padding: 25px 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+header p {
+    margin: 10px 0 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px 20px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.search-box button {
+    background: #bf0000;
+    color: white;
+    border: none;
+    padding: 0 25px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background: #990000;
+}
+
+.message {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 20px;
+}
+
+.product {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    transition: .2s;
+}
+
+.product:hover {
+    transform: translateY(-3px);
+}
+
+.product img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: #eee;
+}
+
+.product-info {
+    padding: 15px;
+}
+
+.product-name {
+    font-size: 15px;
+    line-height: 1.6;
+    height: 72px;
+    overflow: hidden;
+}
+
+.price {
+    color: #bf0000;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 12px 0;
+}
+
+.product a {
+    display: block;
+    background: #bf0000;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.product a:hover {
+    background: #990000;
+}
+
+@media (max-width: 600px) {
 
     header h1 {
-      margin: 0 0 10px;
-      font-size: 28px;
+        font-size: 22px;
     }
 
-    header p {
-      margin: 0;
-      opacity: 0.9;
+    .search-box {
+        flex-direction: column;
     }
 
-    main {
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 0 20px;
+    .search-box button {
+        padding: 15px;
     }
 
-    .notice {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 25px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .product {
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    .product-image {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: #eeeeee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #888;
-    }
-
-    .product-info {
-      padding: 15px;
-    }
-
-    .product-name {
-      font-size: 16px;
-      font-weight: bold;
-      line-height: 1.5;
-      margin-bottom: 10px;
-    }
-
-    .product-price {
-      color: #bf0000;
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
-
-    .product-link {
-      display: block;
-      text-align: center;
-      background: #bf0000;
-      color: white;
-      text-decoration: none;
-      padding: 12px;
-      border-radius: 6px;
-    }
-
-    .product-link:hover {
-      opacity: 0.85;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: #777;
-    }
-  </style>
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>楽天ROOMおすすめ商品</h1>
-  <p>楽天ROOMで紹介しているおすすめ商品</p>
+    <h1>楽天ROOMおすすめ商品</h1>
+    <p>おすすめの商品を検索・紹介します</p>
 </header>
 
-<main>
+<div class="container">
 
-  <div class="notice">
-    <strong>おすすめ商品一覧</strong><br>
-    ここに楽天ROOMで紹介している商品を表示します。
-  </div>
+    <div class="search-box">
+        <input
+            type="text"
+            id="keyword"
+            placeholder="商品を検索 例：バッグ、スニーカー、家電"
+        >
 
-  <div id="products" class="products">
+        <button onclick="searchProducts()">
+            商品を検索
+        </button>
+    </div>
 
-    <!-- 商品はここに自動表示されます -->
+    <div class="message" id="message">
+        キーワードを入力して商品を検索してください
+    </div>
 
-  </div>
+    <div class="products" id="products">
 
-</main>
+    </div>
 
-<footer>
-  楽天ROOMおすすめ商品
-</footer>
+</div>
 
 <script>
 
-const products = [
+function searchProducts() {
 
-  {
-    name: "楽天ROOMおすすめ商品",
-    price: "商品情報を取得予定",
-    image: "",
-    url: "#"
-  }
+    const keyword = document.getElementById("keyword").value;
 
-];
+    if (!keyword) {
+        alert("検索したい商品を入力してください");
+        return;
+    }
 
+    document.getElementById("message").textContent =
+        "「" + keyword + "」の商品を検索しています...";
 
-const container = document.getElementById("products");
+    /*
+    次の段階で、
+    ここに楽天市場APIとの接続処理を追加します。
+    */
 
+    setTimeout(() => {
 
-products.forEach(product => {
+        document.getElementById("message").textContent =
+            "楽天API接続準備中です。「" +
+            keyword +
+            "」の検索機能を作成できます。";
 
-  const card = document.createElement("div");
+    }, 500);
 
-  card.className = "product";
-
-  card.innerHTML = `
-
-    <div class="product-image">
-
-      ${
-        product.image
-          ? `<img src="${product.image}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;">`
-          : "商品画像"
-      }
-
-    </div>
-
-    <div class="product-info">
-
-      <div class="product-name">
-        ${product.name}
-      </div>
-
-      <div class="product-price">
-        ${product.price}
-      </div>
-
-      <a
-        href="${product.url}"
-        class="product-link"
-        target="_blank"
-        rel="noopener"
-      >
-        楽天市場で見る
-      </a>
-
-    </div>
-
-  `;
-
-  container.appendChild(card);
-
-});
+}
 
 </script>
 
