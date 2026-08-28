@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 
 <head>
@@ -12,13 +13,16 @@
 
 <title>楽天ROOMおすすめ商品</title>
 
+
 <style>
 
 * {
   box-sizing: border-box;
 }
 
+
 body {
+
   margin: 0;
 
   font-family:
@@ -29,7 +33,9 @@ body {
     sans-serif;
 
   background: #f5f5f5;
+
   color: #333;
+
 }
 
 
@@ -38,22 +44,33 @@ body {
 ================================ */
 
 header {
+
   background: #bf0000;
+
   color: white;
 
   padding: 30px 20px;
 
   text-align: center;
+
 }
+
 
 header h1 {
+
   margin: 0 0 10px;
+
   font-size: 28px;
+
 }
 
+
 header p {
+
   margin: 0;
+
   font-size: 16px;
+
 }
 
 
@@ -62,9 +79,13 @@ header p {
 ================================ */
 
 .container {
+
   max-width: 1100px;
+
   margin: 30px auto;
+
   padding: 0 20px;
+
 }
 
 
@@ -73,6 +94,7 @@ header p {
 ================================ */
 
 .search-box {
+
   background: white;
 
   padding: 20px;
@@ -84,31 +106,46 @@ header p {
     rgba(0, 0, 0, .08);
 
   margin-bottom: 25px;
+
 }
+
 
 .search-box h2 {
+
   margin-top: 0;
+
 }
+
 
 .search-area {
+
   display: flex;
+
   gap: 10px;
+
 }
 
+
 .search-area input {
+
   flex: 1;
 
   padding: 14px;
 
-  border: 1px solid #ccc;
+  border:
+    1px solid #ccc;
 
   border-radius: 6px;
 
   font-size: 16px;
+
 }
 
+
 .search-area button {
-  padding: 14px 25px;
+
+  padding:
+    14px 25px;
 
   background: #bf0000;
 
@@ -121,15 +158,23 @@ header p {
   font-size: 16px;
 
   cursor: pointer;
+
 }
+
 
 .search-area button:hover {
+
   background: #990000;
+
 }
 
+
 .search-area button:disabled {
-  background: #999;
+
+  opacity: .6;
+
   cursor: not-allowed;
+
 }
 
 
@@ -138,6 +183,7 @@ header p {
 ================================ */
 
 #products {
+
   display: grid;
 
   grid-template-columns:
@@ -147,6 +193,7 @@ header p {
     );
 
   gap: 20px;
+
 }
 
 
@@ -155,6 +202,7 @@ header p {
 ================================ */
 
 .product {
+
   background: white;
 
   border-radius: 12px;
@@ -168,9 +216,12 @@ header p {
   display: flex;
 
   flex-direction: column;
+
 }
 
+
 .product img {
+
   width: 100%;
 
   height: 220px;
@@ -180,9 +231,12 @@ header p {
   background: #fff;
 
   padding: 10px;
+
 }
 
+
 .product-info {
+
   padding: 15px;
 
   display: flex;
@@ -190,9 +244,12 @@ header p {
   flex-direction: column;
 
   flex: 1;
+
 }
 
+
 .product-name {
+
   font-size: 15px;
 
   font-weight: bold;
@@ -208,9 +265,12 @@ header p {
   -webkit-box-orient: vertical;
 
   overflow: hidden;
+
 }
 
+
 .price {
+
   color: #bf0000;
 
   font-size: 20px;
@@ -218,9 +278,12 @@ header p {
   font-weight: bold;
 
   margin-bottom: 15px;
+
 }
 
+
 .product a {
+
   display: block;
 
   margin-top: auto;
@@ -238,10 +301,14 @@ header p {
   border-radius: 6px;
 
   font-weight: bold;
+
 }
 
+
 .product a:hover {
+
   background: #990000;
+
 }
 
 
@@ -250,6 +317,7 @@ header p {
 ================================ */
 
 .message {
+
   background: white;
 
   padding: 30px;
@@ -259,26 +327,11 @@ header p {
   text-align: center;
 
   grid-column: 1 / -1;
+
 }
 
 
 /* ================================
-スマホ
-================================ */
-
-@media (max-width: 600px) {
-
-  .search-area {
-    flex-direction: column;
-  }
-
-  header h1 {
-    font-size: 24px;
-  }
-
-}
-
-  /* ================================
 もっと見る
 ================================ */
 
@@ -291,10 +344,11 @@ header p {
 
 }
 
+
 #load-more {
 
   padding:
-    15px 60px;
+    15px 50px;
 
   background: #bf0000;
 
@@ -302,7 +356,7 @@ header p {
 
   border: none;
 
-  border-radius: 6px;
+  border-radius: 8px;
 
   font-size: 16px;
 
@@ -312,68 +366,41 @@ header p {
 
 }
 
+
 #load-more:hover {
 
   background: #990000;
 
 }
+
+
 /* ================================
-もっと見る
+スマホ
 ================================ */
 
-.load-more-container {
+@media (max-width: 600px) {
 
-  grid-column: 1 / -1;
+  .search-area {
 
-  text-align: center;
+    flex-direction: column;
 
-  padding:
-    20px 0 40px;
+  }
 
-}
+  header h1 {
 
+    font-size: 24px;
 
-.load-more-button {
-
-  padding:
-    15px 50px;
-
-  background:
-    #bf0000;
-
-  color:
-    white;
-
-  border:
-    none;
-
-  border-radius:
-    8px;
-
-  font-size:
-    16px;
-
-  font-weight:
-    bold;
-
-  cursor:
-    pointer;
+  }
 
 }
 
-
-.load-more-button:hover {
-
-  background:
-    #990000;
-
-}
 </style>
 
 </head>
 
 
 <body>
+
 
 <header>
 
@@ -388,7 +415,11 @@ header p {
 </header>
 
 
+
 <div class="container">
+
+
+  <!-- 検索 -->
 
   <div class="search-box">
 
@@ -396,13 +427,16 @@ header p {
       商品を検索
     </h2>
 
+
     <div class="search-area">
+
 
       <input
         type="text"
         id="keyword"
         placeholder="例：スニーカー、バッグ、家電"
       >
+
 
       <button
         type="button"
@@ -412,36 +446,44 @@ header p {
         検索
       </button>
 
+
     </div>
 
   </div>
 
 
-<div id="products">
+  <!-- 商品一覧 -->
 
-  <div class="message">
+  <div id="products">
 
-    キーワードを入力して
-    「検索」を押してください。
+    <div class="message">
+
+      キーワードを入力して
+      「検索」を押してください。
+
+    </div>
 
   </div>
 
+
+  <!-- もっと見る -->
+
+  <div id="load-more-area">
+
+    <button
+      id="load-more"
+      type="button"
+      onclick="loadMoreProducts()"
+      style="display:none;"
+    >
+      もっと見る
+    </button>
+
+  </div>
+
+
 </div>
 
-<div id="load-more-area">
-
-  <button
-    id="load-more"
-    type="button"
-    onclick="loadMoreProducts()"
-    style="display:none;"
-  >
-    もっと見る
-  </button>
-
-</div>
-
-</div>
 
 
 <script>
@@ -455,7 +497,7 @@ const WORKER_API =
 
 
 /* =================================
-設定
+表示設定
 ================================= */
 
 const INITIAL_COUNT = 50;
@@ -468,8 +510,6 @@ const MAX_COUNT = 100;
 /* =================================
 変数
 ================================= */
-
-let currentKeyword = "";
 
 let allProducts = [];
 
@@ -500,98 +540,175 @@ async function searchProducts() {
   }
 
 
-  currentKeyword =
-    keyword;
-
-
-  allProducts =
-    [];
-
-
-  displayedCount =
-    0;
-
-
   const products =
-    document.getElementById("products");
+    document.getElementById(
+      "products"
+    );
+
+
+  const loadMoreButton =
+    document.getElementById(
+      "load-more"
+    );
+
+
+  const searchButton =
+    document.getElementById(
+      "searchButton"
+    );
+
+
+  // 初期化
+
+  allProducts = [];
+
+  displayedCount = 0;
+
+
+  loadMoreButton.style.display =
+    "none";
+
+
+  searchButton.disabled =
+    true;
 
 
   products.innerHTML = `
+
     <div class="message">
+
       商品を検索しています...
+
     </div>
+
   `;
 
 
   try {
 
-    /*
-    最大100件取得するため
-    30件 × 4ページ取得
-    */
 
-    const pages =
-      [1, 2, 3, 4];
+    /* ===============================
+    1〜4ページ取得
+    30件 × 4ページ = 最大120件
+    ↓
+    最大100件使用
+    =============================== */
 
-
-    const results =
-      await Promise.all(
-
-        pages.map(
-          async function(page) {
-
-            const apiUrl =
-              WORKER_API +
-              "?keyword=" +
-              encodeURIComponent(keyword) +
-              "&page=" +
-              page;
+    const results = [];
 
 
-            const response =
-              await fetch(apiUrl);
+    for (
+      let page = 1;
+      page <= 4;
+      page++
+    ) {
+
+      const apiUrl =
+        WORKER_API +
+        "?keyword=" +
+        encodeURIComponent(keyword) +
+        "&page=" +
+        page;
 
 
-            const data =
-              await response.json();
+      const response =
+        await fetch(apiUrl);
 
 
-            if (!response.ok) {
-
-              throw new Error(
-
-                data.error ||
-                data.details?.errors?.errorMessage ||
-                "商品検索に失敗しました。"
-
-              );
-
-            }
+      const data =
+        await response.json();
 
 
-            return (
-              data.Items ||
-              data.items ||
-              []
-            );
+      if (!response.ok) {
 
-          }
-        )
+        throw new Error(
+          data.error ||
+          data.details?.errors?.errorMessage ||
+          "商品検索に失敗しました。"
+        );
 
+      }
+
+
+      const items =
+        data.Items ||
+        data.items ||
+        [];
+
+
+      results.push(
+        ...items
       );
 
 
-    /*
-    4ページ分を1つにまとめる
-    */
+      // API側でこれ以上の商品がない場合
+
+      if (
+        items.length < 30
+      ) {
+        break;
+      }
+
+    }
+
+
+    /* ===============================
+    重複削除
+    =============================== */
+
+    const uniqueProducts =
+      [];
+
+
+    const productKeys =
+      new Set();
+
+
+    for (
+      const item of results
+    ) {
+
+      const product =
+        item.Item ||
+        item;
+
+
+      const key =
+        product.itemCode ||
+        product.itemUrl ||
+        product.affiliateUrl;
+
+
+      if (
+        !key ||
+        !productKeys.has(key)
+      ) {
+
+        if (key) {
+
+          productKeys.add(key);
+
+        }
+
+
+        uniqueProducts.push(
+          item
+        );
+
+      }
+
+    }
+
+
+    /* ===============================
+    最大100件
+    =============================== */
 
     allProducts =
-      results
-        .flat()
-        .slice(
-          0,
-          MAX_COUNT
-        );
+      uniqueProducts.slice(
+        0,
+        MAX_COUNT
+      );
 
 
     if (
@@ -599,9 +716,13 @@ async function searchProducts() {
     ) {
 
       products.innerHTML = `
+
         <div class="message">
+
           商品が見つかりませんでした。
+
         </div>
+
       `;
 
       return;
@@ -609,13 +730,14 @@ async function searchProducts() {
     }
 
 
-    products.innerHTML =
-      "";
+    // 商品一覧を空にする
+
+    products.innerHTML = "";
 
 
-    /*
-    最初は50件表示
-    */
+    /* ===============================
+    最初の50件表示
+    =============================== */
 
     showMoreProducts(
       INITIAL_COUNT
@@ -624,6 +746,7 @@ async function searchProducts() {
 
   } catch (error) {
 
+
     console.error(
       "商品検索エラー:",
       error
@@ -631,12 +754,30 @@ async function searchProducts() {
 
 
     products.innerHTML = `
+
       <div class="message">
+
         商品を取得できませんでした。
+
         <br><br>
+
         ${escapeHtml(error.message)}
+
+        <br><br>
+
+        少し時間をおいて、
+        もう一度検索してください。
+
       </div>
+
     `;
+
+
+  } finally {
+
+
+    searchButton.disabled =
+      false;
 
   }
 
@@ -644,14 +785,10 @@ async function searchProducts() {
 
 
 /* =================================
-商品を追加表示
+さらに商品を表示
 ================================= */
 
 function showMoreProducts(count) {
-
-  const products =
-    document.getElementById("products");
-
 
   const endIndex =
     Math.min(
@@ -667,12 +804,8 @@ function showMoreProducts(count) {
     i++
   ) {
 
-    const item =
-      allProducts[i];
-
-
     addProductCard(
-      item
+      allProducts[i]
     );
 
   }
@@ -688,88 +821,44 @@ function showMoreProducts(count) {
 
 
 /* =================================
-もっと見るボタン
+もっと見る
+================================= */
+
+function loadMoreProducts() {
+
+  showMoreProducts(
+    LOAD_MORE_COUNT
+  );
+
+}
+
+
+/* =================================
+もっと見るボタン表示
 ================================= */
 
 function updateLoadMoreButton() {
 
-  const oldButton =
+  const button =
     document.getElementById(
-      "loadMoreContainer"
+      "load-more"
     );
-
-
-  if (oldButton) {
-
-    oldButton.remove();
-
-  }
 
 
   if (
-    displayedCount >= allProducts.length ||
-    displayedCount >= MAX_COUNT
+    displayedCount < allProducts.length &&
+    displayedCount < MAX_COUNT
   ) {
 
-    return;
+    button.style.display =
+      "inline-block";
+
+  } else {
+
+    button.style.display =
+      "none";
 
   }
-
-
-  const products =
-    document.getElementById(
-      "products"
-    );
-
-
-  const container =
-    document.createElement(
-      "div"
-    );
-
-
-  container.id =
-    "loadMoreContainer";
-
-
-  container.className =
-    "load-more-container";
-
-
-  const button =
-    document.createElement(
-      "button"
-    );
-
-
-  button.className =
-    "load-more-button";
-
-
-  button.textContent =
-    "もっと見る";
-
-
-  button.addEventListener(
-    "click",
-    function() {
-
-      showMoreProducts(
-        LOAD_MORE_COUNT
-      );
-
-    }
-  );
-
-
-  container.appendChild(
-    button
-  );
-
-
-  products.appendChild(
-    container
-  );
 
 }
 
@@ -811,8 +900,7 @@ function addProductCard(item) {
     "#";
 
 
-  let imageUrl =
-    "";
+  let imageUrl = "";
 
 
   if (
@@ -831,13 +919,16 @@ function addProductCard(item) {
   }
 
 
+  /* 画像がない場合 */
+
   if (!imageUrl) {
 
     imageUrl =
       "data:image/svg+xml;charset=UTF-8," +
 
-      encodeURIComponent(`
+      encodeURIComponent(
 
+        `
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="400"
@@ -858,16 +949,21 @@ function addProductCard(item) {
             fill="#999999"
             font-size="20"
           >
-
             No Image
-
           </text>
 
         </svg>
+        `
 
-      `);
+      );
 
   }
+
+
+  const products =
+    document.getElementById(
+      "products"
+    );
 
 
   const card =
@@ -887,7 +983,9 @@ function addProductCard(item) {
       alt="${escapeHtml(itemName)}"
     >
 
+
     <div class="product-info">
+
 
       <div class="product-name">
 
@@ -913,16 +1011,15 @@ function addProductCard(item) {
 
       </a>
 
+
     </div>
 
   `;
 
 
-  document
-    .getElementById("products")
-    .appendChild(
-      card
-    );
+  products.appendChild(
+    card
+  );
 
 }
 
@@ -964,15 +1061,13 @@ function escapeHtml(text) {
 
 
 /* =================================
-Enterキー
+Enterキーで検索
 ================================= */
 
 document
   .getElementById("keyword")
   .addEventListener(
-
     "keydown",
-
     function(event) {
 
       if (
@@ -984,11 +1079,11 @@ document
       }
 
     }
-
   );
 
 </script>
-  
+
+
 </body>
 
 </html>
