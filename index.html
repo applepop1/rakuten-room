@@ -278,6 +278,46 @@ header p {
 
 }
 
+  /* ================================
+もっと見る
+================================ */
+
+#load-more-area {
+
+  text-align: center;
+
+  margin:
+    30px 0 50px;
+
+}
+
+#load-more {
+
+  padding:
+    15px 60px;
+
+  background: #bf0000;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 6px;
+
+  font-size: 16px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+}
+
+#load-more:hover {
+
+  background: #990000;
+
+}
+
 </style>
 
 </head>
@@ -327,16 +367,29 @@ header p {
   </div>
 
 
-  <div id="products">
+<div id="products">
 
-    <div class="message">
+  <div class="message">
 
-      キーワードを入力して
-      「検索」を押してください。
-
-    </div>
+    キーワードを入力して
+    「検索」を押してください。
 
   </div>
+
+</div>
+
+<div id="load-more-area">
+
+  <button
+    id="load-more"
+    type="button"
+    onclick="loadMoreProducts()"
+    style="display:none;"
+  >
+    もっと見る
+  </button>
+
+</div>
 
 </div>
 
@@ -352,39 +405,34 @@ const WORKER_API =
 
 
 /* =================================
-待機処理
+変数
 ================================= */
 
-function sleep(ms) {
+let allProducts = [];
 
-  return new Promise(
-    resolve => setTimeout(resolve, ms)
-  );
+let displayedCount = 0;
 
-}
+let currentKeyword = "";
+
+const FIRST_DISPLAY = 50;
+
+const LOAD_MORE_COUNT = 25;
+
+const MAX_PRODUCTS = 100;
 
 
 /* =================================
-楽天商品検索
+商品検索
 ================================= */
 
 async function searchProducts() {
 
-  const keywordInput =
-    document.getElementById("keyword");
-
-  const searchButton =
-    document.getElementById("searchButton");
-
-  const products =
-    document.getElementById("products");
-
-
   const keyword =
-    keywordInput.value.trim();
+    document
+      .getElementById("keyword")
+      .value
+      .trim();
 
-
-  /* キーワード未入力 */
 
   if (!keyword) {
 
@@ -397,12 +445,19 @@ async function searchProducts() {
   }
 
 
-  /* 検索中は連打禁止 */
+  currentKeyword = keyword;
 
-  searchButton.disabled = true;
+  allProducts = [];
 
-  searchButton.textContent =
-    "検索中...";
+  displayedCount = 0;
+
+
+  const products =
+    document.getElementById("products");
+
+
+  const loadMoreButton =
+    document.getElementById("load-more");
 
 
   products.innerHTML = `
@@ -416,394 +471,433 @@ async function searchProducts() {
   `;
 
 
-  const apiUrl =
-    WORKER_API +
-    "?keyword=" +
-    encodeURIComponent(keyword);
+  loadMoreButton.style.display =
+    "none";
 
 
-  let lastError = null;
+  try {
 
 
-  /* ================================
-  最大3回試行
-  ================================= */
+    /* =============================
+    1ページ目：1～50件
+    ============================= */
 
-  for (
-    let attempt = 1;
-    attempt <= 3;
-    attempt++
-  ) {
-
-    try {
-
-      if (attempt > 1) {
-
-        products.innerHTML = `
-
-          <div class="message">
-
-            接続を再試行しています...
-            <br><br>
-
-            ${attempt} / 3 回目
-
-          </div>
-
-        `;
-
-        await sleep(1500);
-
-      }
-
-
-      const response =
-        await fetch(apiUrl);
-
-
-      /* JSON取得 */
-
-      let data;
-
-      try {
-
-        data =
-          await response.json();
-
-      }
-
-      catch (jsonError) {
-
-        throw new Error(
-          "サーバーから正しいデータを取得できませんでした。"
-        );
-
-      }
-
-
-      /* APIエラー */
-
-      if (!response.ok) {
-
-        const errorMessage =
-
-          data.error
-
-          ||
-
-          data.details?.errorMessage
-
-          ||
-
-          data.details?.errors?.errorMessage
-
-          ||
-
-          data.message
-
-          ||
-
-          `HTTP ${response.status}`;
-
-
-        throw new Error(
-          errorMessage
-        );
-
-      }
-
-
-      /* ================================
-      商品データ取得
-      ================================= */
-
-      const items =
-
-        data.Items
-
-        ||
-
-        data.items
-
-        ||
-
-        [];
-
-
-      /* 商品なし */
-
-      if (
-        !Array.isArray(items)
-        ||
-        items.length === 0
-      ) {
-
-        products.innerHTML = `
-
-          <div class="message">
-
-            商品が見つかりませんでした。
-
-          </div>
-
-        `;
-
-        return;
-
-      }
-
-
-      /* 商品一覧をクリア */
-
-      products.innerHTML = "";
-
-
-      /* ================================
-      商品カード作成
-      ================================= */
-
-      items.forEach(
-        function(item) {
-
-          const product =
-            item.Item ||
-            item;
-
-
-          /* 商品名 */
-
-          const itemName =
-            product.itemName ||
-            "商品名なし";
-
-
-          /* 価格 */
-
-          const rawPrice =
-            product.itemPrice;
-
-
-          const itemPrice =
-
-            rawPrice !== undefined
-            &&
-            rawPrice !== null
-            &&
-            rawPrice !== ""
-
-              ?
-
-              Number(rawPrice)
-                .toLocaleString()
-
-              :
-
-              "価格情報なし";
-
-
-          /* 商品URL */
-
-          const itemUrl =
-
-            product.affiliateUrl
-
-            ||
-
-            product.itemUrl
-
-            ||
-
-            "#";
-
-
-          /* 商品画像 */
-
-          let imageUrl = "";
-
-
-          if (
-            product.mediumImageUrls
-            &&
-            product.mediumImageUrls.length > 0
-          ) {
-
-            const image =
-              product.mediumImageUrls[0];
-
-
-            imageUrl =
-
-              image.imageUrl
-
-              ||
-
-              image;
-
-          }
-
-
-          /* 画像なし */
-
-          if (!imageUrl) {
-
-            imageUrl =
-
-              "data:image/svg+xml;charset=UTF-8,"
-
-              +
-
-              encodeURIComponent(
-
-                `<svg xmlns="http://www.w3.org/2000/svg"
-                  width="400"
-                  height="400">
-
-                  <rect
-                    width="100%"
-                    height="100%"
-                    fill="#eeeeee"
-                  />
-
-                  <text
-                    x="50%"
-                    y="50%"
-                    text-anchor="middle"
-                    dominant-baseline="middle"
-                    fill="#999999"
-                    font-size="20"
-                  >
-
-                    No Image
-
-                  </text>
-
-                </svg>`
-
-              );
-
-          }
-
-
-          /* カード作成 */
-
-          const card =
-            document.createElement("div");
-
-
-          card.className =
-            "product";
-
-
-          card.innerHTML = `
-
-            <img
-
-              src="${escapeHtml(imageUrl)}"
-
-              alt="${escapeHtml(itemName)}"
-
-            >
-
-
-            <div class="product-info">
-
-
-              <div class="product-name">
-
-                ${escapeHtml(itemName)}
-
-              </div>
-
-
-              <div class="price">
-
-                ${escapeHtml(itemPrice)}円
-
-              </div>
-
-
-              <a
-
-                href="${escapeHtml(itemUrl)}"
-
-                target="_blank"
-
-                rel="noopener noreferrer"
-
-              >
-
-                楽天市場で見る
-
-              </a>
-
-
-            </div>
-
-          `;
-
-
-          products.appendChild(card);
-
-        }
+    const data1 =
+      await fetchProducts(
+        keyword,
+        1
       );
 
 
-      /* 成功したので終了 */
+    /* =============================
+    2ページ目：51～100件
+    ============================= */
+
+    const data2 =
+      await fetchProducts(
+        keyword,
+        2
+      );
+
+
+    const items1 =
+      data1.Items ||
+      data1.items ||
+      [];
+
+
+    const items2 =
+      data2.Items ||
+      data2.items ||
+      [];
+
+
+    allProducts =
+      [
+        ...items1,
+        ...items2
+      ].slice(
+        0,
+        MAX_PRODUCTS
+      );
+
+
+    if (
+      allProducts.length === 0
+    ) {
+
+      products.innerHTML = `
+
+        <div class="message">
+
+          商品が見つかりませんでした。
+
+        </div>
+
+      `;
 
       return;
 
     }
 
-    catch (error) {
 
-      console.error(
-        `検索 ${attempt}回目失敗:`,
-        error
-      );
+    /* =============================
+    最初に50件表示
+    ============================= */
 
-      lastError =
-        error;
+    products.innerHTML = "";
 
-    }
+
+    displayProducts(
+      FIRST_DISPLAY
+    );
+
+
+  } catch (error) {
+
+
+    console.error(
+      "商品検索エラー:",
+      error
+    );
+
+
+    products.innerHTML = `
+
+      <div class="message">
+
+        商品を取得できませんでした。
+
+        <br><br>
+
+        ${escapeHtml(
+          error.message
+        )}
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =================================
+Workerから商品取得
+================================= */
+
+async function fetchProducts(
+  keyword,
+  page
+) {
+
+
+  const apiUrl =
+    WORKER_API +
+    "?keyword=" +
+    encodeURIComponent(keyword) +
+    "&page=" +
+    page;
+
+
+  const response =
+    await fetch(apiUrl);
+
+
+  const data =
+    await response.json();
+
+
+  if (!response.ok) {
+
+    throw new Error(
+
+      data.error ||
+
+      data.details
+        ?.errors
+        ?.errorMessage ||
+
+      "商品検索に失敗しました。"
+
+    );
 
   }
 
 
-  /* =================================
-  3回すべて失敗
-  ================================= */
+  return data;
 
-  products.innerHTML = `
-
-    <div class="message">
-
-      商品を取得できませんでした。
-
-      <br><br>
-
-      ${escapeHtml(
-        lastError
-          ? lastError.message
-          : "原因不明のエラー"
-      )}
-
-      <br><br>
-
-      少し時間をおいて、
-      もう一度検索してください。
-
-    </div>
-
-  `;
+}
 
 
-  /* ボタンを元に戻す */
+/* =================================
+商品を表示
+================================= */
 
-  searchButton.disabled =
-    false;
+function displayProducts(
+  count
+) {
 
-  searchButton.textContent =
-    "検索";
+
+  const products =
+    document.getElementById("products");
+
+
+  const endIndex =
+    Math.min(
+
+      displayedCount + count,
+
+      allProducts.length,
+
+      MAX_PRODUCTS
+
+    );
+
+
+  for (
+
+    let i = displayedCount;
+
+    i < endIndex;
+
+    i++
+
+  ) {
+
+
+    const item =
+      allProducts[i];
+
+
+    const product =
+      item.Item ||
+      item;
+
+
+    const itemName =
+      product.itemName ||
+      "商品名なし";
+
+
+    const rawPrice =
+      product.itemPrice;
+
+
+    const itemPrice =
+
+      rawPrice !== undefined &&
+
+      rawPrice !== null &&
+
+      rawPrice !== ""
+
+        ? Number(
+            rawPrice
+          ).toLocaleString()
+
+        : "価格情報なし";
+
+
+    const itemUrl =
+
+      product.affiliateUrl ||
+
+      product.itemUrl ||
+
+      "#";
+
+
+    let imageUrl =
+      "";
+
+
+    if (
+
+      product.mediumImageUrls &&
+
+      product.mediumImageUrls.length > 0
+
+    ) {
+
+
+      const image =
+        product.mediumImageUrls[0];
+
+
+      imageUrl =
+
+        image.imageUrl ||
+        image;
+
+    }
+
+
+    if (!imageUrl) {
+
+
+      imageUrl =
+
+        "data:image/svg+xml;charset=UTF-8," +
+
+        encodeURIComponent(`
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="400"
+            height="400"
+          >
+
+            <rect
+              width="100%"
+              height="100%"
+              fill="#eeeeee"
+            />
+
+            <text
+              x="50%"
+              y="50%"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              fill="#999999"
+              font-size="20"
+            >
+
+              No Image
+
+            </text>
+
+          </svg>
+
+        `);
+
+    }
+
+
+    const card =
+      document.createElement(
+        "div"
+      );
+
+
+    card.className =
+      "product";
+
+
+    card.innerHTML = `
+
+      <img
+        src="${escapeHtml(imageUrl)}"
+        alt="${escapeHtml(itemName)}"
+      >
+
+
+      <div class="product-info">
+
+
+        <div class="product-name">
+
+          ${escapeHtml(itemName)}
+
+        </div>
+
+
+        <div class="price">
+
+          ${escapeHtml(itemPrice)}円
+
+        </div>
+
+
+        <a
+          href="${escapeHtml(itemUrl)}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          楽天市場で見る
+
+        </a>
+
+
+      </div>
+
+    `;
+
+
+    products.appendChild(
+      card
+    );
+
+  }
+
+
+  displayedCount =
+    endIndex;
+
+
+  updateLoadMoreButton();
+
+}
+
+
+/* =================================
+もっと見る
+================================= */
+
+function loadMoreProducts() {
+
+
+  displayProducts(
+    LOAD_MORE_COUNT
+  );
+
+}
+
+
+/* =================================
+もっと見るボタン表示制御
+================================= */
+
+function updateLoadMoreButton() {
+
+
+  const loadMoreButton =
+    document.getElementById(
+      "load-more"
+    );
+
+
+  if (
+
+    displayedCount <
+
+    allProducts.length &&
+
+    displayedCount <
+
+    MAX_PRODUCTS
+
+  ) {
+
+
+    loadMoreButton.style.display =
+      "inline-block";
+
+
+    loadMoreButton.textContent =
+
+      `もっと見る（${displayedCount} / ${allProducts.length}件）`;
+
+
+  } else {
+
+
+    loadMoreButton.style.display =
+      "none";
+
+  }
 
 }
 
@@ -812,19 +906,36 @@ async function searchProducts() {
 HTMLエスケープ
 ================================= */
 
-function escapeHtml(text) {
+function escapeHtml(
+  text
+) {
 
   return String(text)
 
-    .replace(/&/g, "&amp;")
+    .replace(
+      /&/g,
+      "&amp;"
+    )
 
-    .replace(/</g, "&lt;")
+    .replace(
+      /</g,
+      "&lt;"
+    )
 
-    .replace(/>/g, "&gt;")
+    .replace(
+      />/g,
+      "&gt;"
+    )
 
-    .replace(/"/g, "&quot;")
+    .replace(
+      /"/g,
+      "&quot;"
+    )
 
-    .replace(/'/g, "&#039;");
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
@@ -834,7 +945,9 @@ Enterキーで検索
 ================================= */
 
 document
-  .getElementById("keyword")
+  .getElementById(
+    "keyword"
+  )
   .addEventListener(
 
     "keydown",
