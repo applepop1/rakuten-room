@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-
 <html lang="ja">
-
 <head>
-
 <meta charset="UTF-8">
 
 <meta
@@ -11,24 +8,21 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>楽天ROOMおすすめ商品</title>
-
+<title>楽天ROOM 商品検索</title>
 
 <style>
 
-/* =================================
-基本設定
-================================= */
+/* ========================================
+   全体
+======================================== */
 
 * {
   box-sizing: border-box;
 }
 
-
 body {
-
   margin: 0;
-
+  padding: 0;
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -37,222 +31,232 @@ body {
     sans-serif;
 
   background: #f5f5f5;
-
   color: #333;
-
 }
 
 
-/* =================================
-ヘッダー
-================================= */
+/* ========================================
+   ヘッダー
+======================================== */
 
 header {
-
-  background: #bf0000;
-
-  color: white;
-
-  padding: 30px 20px;
-
-  text-align: center;
-
-}
-
-
-header h1 {
-
-  margin: 0 0 10px;
-
-  font-size: 28px;
-
-}
-
-
-header p {
-
-  margin: 0;
-
-  font-size: 16px;
-
-}
-
-
-/* =================================
-メイン
-================================= */
-
-.container {
-
-  max-width: 1100px;
-
-  margin: 30px auto;
-
-  padding: 0 20px;
-
-}
-
-
-/* =================================
-検索エリア
-================================= */
-
-.search-box {
-
-  background: white;
-
+  background: #ffffff;
+  border-bottom: 1px solid #dddddd;
   padding: 20px;
+}
 
-  border-radius: 12px;
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
 
-  box-shadow:
-    0 2px 10px
-    rgba(0, 0, 0, .08);
+h1 {
+  margin: 0;
+  font-size: 24px;
+}
 
-  margin-bottom: 25px;
-
+.subtitle {
+  margin-top: 8px;
+  color: #777777;
+  font-size: 14px;
 }
 
 
-.search-box h2 {
-
-  margin-top: 0;
-
-}
-
+/* ========================================
+   検索エリア
+======================================== */
 
 .search-area {
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 20px;
 
-  display: flex;
+  background: #ffffff;
 
-  gap: 10px;
-
+  border-radius: 10px;
+  box-shadow:
+    0 2px 8px
+    rgba(0, 0, 0, 0.08);
 }
 
+.search-form {
+  display: flex;
+  gap: 10px;
+}
 
-.search-area input {
-
+#keyword {
   flex: 1;
 
-  padding: 14px;
-
-  border:
-    1px solid #ccc;
-
-  border-radius: 6px;
-
-  font-size: 16px;
-
-}
-
-
-.search-area button {
+  height: 48px;
 
   padding:
-    14px 25px;
-
-  background: #bf0000;
-
-  color: white;
-
-  border: none;
-
-  border-radius: 6px;
+    0
+    15px;
 
   font-size: 16px;
 
+  border:
+    1px
+    solid
+    #cccccc;
+
+  border-radius: 6px;
+}
+
+#searchButton {
+  width: 140px;
+  height: 48px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: #bf0000;
+  color: #ffffff;
+
+  font-size: 16px;
+  font-weight: bold;
+
   cursor: pointer;
-
 }
 
-
-.search-area button:hover {
-
+#searchButton:hover {
   background: #990000;
-
 }
 
-
-.search-area button:disabled {
-
-  background: #999;
-
+#searchButton:disabled {
+  background: #999999;
   cursor: not-allowed;
-
 }
 
 
-/* =================================
-検索結果情報
-================================= */
+/* ========================================
+   情報表示
+======================================== */
 
-#result-info {
+.status-area {
+  max-width: 1400px;
+  margin:
+    0
+    auto
+    20px;
 
-  margin-bottom: 20px;
+  padding:
+    0
+    20px;
+}
 
-  font-size: 15px;
+#status {
+  padding: 12px 15px;
 
-  color: #666;
+  background: #ffffff;
 
+  border-radius: 6px;
+
+  font-size: 14px;
+}
+
+.status-loading {
+  color: #0066cc;
+}
+
+.status-error {
+  color: #cc0000;
+}
+
+.status-success {
+  color: #333333;
 }
 
 
-/* =================================
-商品一覧
-================================= */
+/* ========================================
+   商品一覧
+======================================== */
 
-#products {
+.product-container {
+  max-width: 1400px;
+
+  margin:
+    0
+    auto;
+
+  padding:
+    0
+    20px
+    40px;
+}
+
+#productList {
 
   display: grid;
 
   grid-template-columns:
     repeat(
       auto-fill,
-      minmax(230px, 1fr)
+      minmax(240px, 1fr)
     );
 
   gap: 20px;
-
 }
 
 
-/* =================================
-商品カード
-================================= */
+/* ========================================
+   商品カード
+======================================== */
 
-.product {
+.product-card {
 
-  background: white;
+  background: #ffffff;
 
-  border-radius: 12px;
+  border-radius: 10px;
 
   overflow: hidden;
 
   box-shadow:
-    0 2px 10px
-    rgba(0, 0, 0, .08);
+    0 2px 8px
+    rgba(0, 0, 0, 0.08);
 
   display: flex;
 
   flex-direction: column;
-
 }
 
 
-.product img {
+/* ========================================
+   商品画像
+======================================== */
+
+.product-image-area {
 
   width: 100%;
 
-  height: 220px;
+  aspect-ratio: 1 / 1;
+
+  background: #f3f3f3;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+.product-image {
+
+  width: 100%;
+
+  height: 100%;
 
   object-fit: contain;
 
-  background: #fff;
-
   padding: 10px;
-
 }
 
+
+/* ========================================
+   商品情報
+======================================== */
 
 .product-info {
 
@@ -263,19 +267,17 @@ header p {
   flex-direction: column;
 
   flex: 1;
-
 }
-
 
 .product-name {
 
-  font-size: 15px;
+  margin: 0;
 
-  font-weight: bold;
+  font-size: 14px;
 
-  line-height: 1.5;
+  line-height: 1.6;
 
-  margin-bottom: 10px;
+  font-weight: 600;
 
   display: -webkit-box;
 
@@ -285,191 +287,238 @@ header p {
 
   overflow: hidden;
 
+  min-height: 68px;
 }
-
 
 .price {
 
-  color: #bf0000;
+  margin-top: 12px;
 
   font-size: 20px;
 
   font-weight: bold;
 
-  margin-bottom: 15px;
+  color: #bf0000;
+}
 
+.shop-name {
+
+  margin-top: 8px;
+
+  font-size: 13px;
+
+  color: #777777;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
 }
 
 
-.product a {
+/* ========================================
+   ボタン
+======================================== */
 
-  display: block;
+.button-area {
 
   margin-top: auto;
 
-  text-align: center;
+  padding-top: 15px;
 
-  padding: 12px;
+  display: grid;
 
-  background: #bf0000;
+  grid-template-columns:
+    1fr
+    1fr;
 
-  color: white;
+  gap: 8px;
+}
+
+.product-link {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  height: 42px;
+
+  border-radius: 5px;
 
   text-decoration: none;
 
-  border-radius: 6px;
+  font-size: 13px;
 
   font-weight: bold;
 
+  background: #eeeeee;
+
+  color: #333333;
+}
+
+.product-link:hover {
+
+  background: #dddddd;
 }
 
 
-.product a:hover {
+/* ========================================
+   ROOM投稿ボタン
+======================================== */
 
-  background: #990000;
+.room-button {
 
-}
-
-
-/* =================================
-メッセージ
-================================= */
-
-.message {
-
-  background: white;
-
-  padding: 30px;
-
-  border-radius: 10px;
-
-  text-align: center;
-
-  grid-column: 1 / -1;
-
-}
-
-
-/* =================================
-もっと見る
-================================= */
-
-.load-more-area {
-
-  text-align: center;
-
-  margin:
-    30px 0
-    10px;
-
-}
-
-
-#load-more {
-
-  padding:
-    15px 50px;
-
-  background: #bf0000;
-
-  color: white;
+  height: 42px;
 
   border: none;
 
-  border-radius: 8px;
+  border-radius: 5px;
 
-  font-size: 17px;
+  background: #bf0000;
+
+  color: #ffffff;
+
+  font-size: 13px;
 
   font-weight: bold;
 
   cursor: pointer;
-
 }
 
-
-#load-more:hover {
+.room-button:hover {
 
   background: #990000;
-
 }
 
 
-#load-more:disabled {
+/* ========================================
+   ページ移動
+======================================== */
 
-  background: #999;
+.pagination {
+
+  max-width: 1400px;
+
+  margin:
+    0
+    auto
+    40px;
+
+  padding:
+    0
+    20px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+.pagination button {
+
+  height: 42px;
+
+  min-width: 100px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  background: #333333;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.pagination button:hover {
+
+  background: #000000;
+}
+
+.pagination button:disabled {
+
+  background: #aaaaaa;
 
   cursor: not-allowed;
+}
 
+#pageInfo {
+
+  min-width: 100px;
+
+  text-align: center;
+
+  font-size: 14px;
 }
 
 
-/* =================================
-スマホ
-================================= */
+/* ========================================
+   スマホ
+======================================== */
 
-@media (max-width: 600px) {
+@media screen and (max-width: 600px) {
 
-  .search-area {
+  .search-form {
 
     flex-direction: column;
-
   }
 
+  #searchButton {
 
-  header h1 {
-
-    font-size: 24px;
-
+    width: 100%;
   }
 
-
-  #products {
+  #productList {
 
     grid-template-columns:
       repeat(
         2,
-        minmax(0, 1fr)
+        1fr
       );
 
     gap: 10px;
-
   }
-
-
-  .product img {
-
-    height: 160px;
-
-  }
-
 
   .product-info {
 
     padding: 10px;
-
   }
-
 
   .product-name {
 
-    font-size: 13px;
+    font-size: 12px;
 
+    min-height: 58px;
   }
-
 
   .price {
 
     font-size: 16px;
-
   }
 
+  .shop-name {
 
-  .product a {
+    font-size: 11px;
+  }
 
-    padding: 10px 5px;
+  .button-area {
 
-    font-size: 13px;
+    grid-template-columns: 1fr;
+  }
 
+  .product-link,
+  .room-button {
+
+    font-size: 12px;
   }
 
 }
@@ -478,102 +527,124 @@ header p {
 
 </head>
 
-
 <body>
 
 
-<!-- =================================
-ヘッダー
-================================= -->
+<!-- ========================================
+     ヘッダー
+======================================== -->
 
 <header>
 
-  <h1>
-    楽天ROOMおすすめ商品
-  </h1>
+  <div class="header-inner">
 
-  <p>
-    楽天ROOMで紹介しているおすすめ商品
-  </p>
+    <h1>
+      楽天ROOM 商品検索
+    </h1>
+
+    <div class="subtitle">
+
+      楽天市場の商品を検索してROOM投稿用に確認できます
+
+    </div>
+
+  </div>
 
 </header>
 
 
-<!-- =================================
-メイン
-================================= -->
 
-<div class="container">
+<!-- ========================================
+     検索エリア
+======================================== -->
 
+<div class="search-area">
 
-  <!-- 検索 -->
+  <div class="search-form">
 
-  <div class="search-box">
-
-    <h2>
-      商品を検索
-    </h2>
-
-
-    <div class="search-area">
-
-      <input
-        type="text"
-        id="keyword"
-        placeholder="例：スニーカー、バッグ、家電"
-      >
-
-
-      <button
-        type="button"
-        id="search-button"
-        onclick="searchProducts()"
-      >
-        検索
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- 検索結果情報 -->
-
-  <div id="result-info"></div>
-
-
-  <!-- 商品一覧 -->
-
-  <div id="products">
-
-    <div class="message">
-
-      キーワードを入力して
-      「検索」を押してください。
-
-    </div>
-
-  </div>
-
-
-  <!-- もっと見る -->
-
-  <div
-    class="load-more-area"
-    id="load-more-area"
-    style="display:none;"
-  >
+    <input
+      type="text"
+      id="keyword"
+      placeholder="検索したい商品を入力"
+    >
 
     <button
+      id="searchButton"
       type="button"
-      id="load-more"
-      onclick="showMoreProducts()"
     >
-      もっと見る
+      検索
     </button>
 
   </div>
 
+</div>
+
+
+
+<!-- ========================================
+     ステータス
+======================================== -->
+
+<div class="status-area">
+
+  <div
+    id="status"
+    class="status-success"
+  >
+
+    キーワードを入力して検索してください。
+
+  </div>
+
+</div>
+
+
+
+<!-- ========================================
+     商品一覧
+======================================== -->
+
+<div class="product-container">
+
+  <div
+    id="productList"
+  ></div>
+
+</div>
+
+
+
+<!-- ========================================
+     ページ移動
+======================================== -->
+
+<div class="pagination">
+
+  <button
+    id="prevButton"
+    type="button"
+    disabled
+  >
+    ← 前へ
+  </button>
+
+
+  <div
+    id="pageInfo"
+  >
+
+    1 ページ
+
+  </div>
+
+
+  <button
+    id="nextButton"
+    type="button"
+    disabled
+  >
+    次へ →
+  </button>
 
 </div>
 
@@ -581,64 +652,83 @@ header p {
 
 <script>
 
-/* =================================
-Cloudflare Worker
-================================= */
+/* ========================================
+   API URL
+======================================== */
 
-const WORKER_API =
-  "https://rakuten-room.you626-m.workers.dev/api/search";
-
-
-/* =================================
-設定
-================================= */
-
-/* 最大100件 */
-
-const MAX_PRODUCTS = 100;
+const API_BASE_URL =
+  "https://rakuten-room.yo626-m.workers.dev/api/search";
 
 
-/* 最初に表示する件数 */
+/* ========================================
+   HTML要素
+======================================== */
 
-const INITIAL_DISPLAY = 50;
+const keywordInput =
+  document.getElementById("keyword");
 
+const searchButton =
+  document.getElementById("searchButton");
 
-/* 「もっと見る」1回ごとの件数 */
+const productList =
+  document.getElementById("productList");
 
-const LOAD_MORE_COUNT = 25;
+const statusElement =
+  document.getElementById("status");
 
+const prevButton =
+  document.getElementById("prevButton");
 
-/* 楽天API 1ページの件数 */
+const nextButton =
+  document.getElementById("nextButton");
 
-const API_PAGE_SIZE = 30;
-
-
-/* =================================
-変数
-================================= */
-
-let allProducts = [];
-
-let displayedCount = 0;
-
-
-/* =================================
-商品検索
-================================= */
-
-async function searchProducts() {
-
-  const keyword =
-    document
-      .getElementById("keyword")
-      .value
-      .trim();
+const pageInfo =
+  document.getElementById("pageInfo");
 
 
-  if (!keyword) {
+/* ========================================
+   状態管理
+======================================== */
 
-    alert(
-      "検索キーワードを入力してください。"
+let currentKeyword = "";
+
+let currentPage = 1;
+
+let maxPage = 1;
+
+let isLoading = false;
+
+
+/* ========================================
+   検索実行
+======================================== */
+
+async function searchProducts(
+  keyword,
+  page
+) {
+
+  if (
+    isLoading
+  ) {
+
+    return;
+
+  }
+
+
+  /* ----------------------------------------
+     キーワード確認
+  ---------------------------------------- */
+
+  if (
+    !keyword ||
+    keyword.trim() === ""
+  ) {
+
+    setStatus(
+      "キーワードを入力してください。",
+      "error"
     );
 
     return;
@@ -646,755 +736,779 @@ async function searchProducts() {
   }
 
 
-  const products =
-    document.getElementById("products");
+  /* ----------------------------------------
+     ローディング開始
+  ---------------------------------------- */
+
+  isLoading = true;
+
+  searchButton.disabled = true;
+
+  prevButton.disabled = true;
+
+  nextButton.disabled = true;
 
 
-  const resultInfo =
-    document.getElementById("result-info");
+  setStatus(
+    "商品を検索しています...",
+    "loading"
+  );
 
 
-  const searchButton =
-    document.getElementById(
-      "search-button"
-    );
-
-
-  const loadMoreArea =
-    document.getElementById(
-      "load-more-area"
-    );
-
-
-  /* 初期化 */
-
-  allProducts = [];
-
-  displayedCount = 0;
-
-
-  loadMoreArea.style.display =
-    "none";
-
-
-  resultInfo.innerHTML =
-    "";
-
-
-  products.innerHTML = `
-
-    <div class="message">
-
-      商品を検索しています...
-
-    </div>
-
-  `;
-
-
-  searchButton.disabled =
-    true;
-
-
-  searchButton.textContent =
-    "検索中...";
+  productList.innerHTML = "";
 
 
   try {
 
-    /*
-    最大100件取得するため
 
-    1ページ30件 × 4ページ
-    = 最大120件取得
+    /* ========================================
+       API URL作成
+    ======================================== */
 
-    その後100件に制限
-    */
-
-    const pages = [
-      1,
-      2,
-      3,
-      4
-    ];
-
-
-    const requests =
-      pages.map(
-        function(page) {
-
-          const apiUrl =
-            WORKER_API +
-            "?keyword=" +
-            encodeURIComponent(
-              keyword
-            ) +
-            "&page=" +
-            page;
-
-
-          return fetch(apiUrl)
-            .then(
-              async function(response) {
-
-                const data =
-                  await response.json();
-
-
-                if (!response.ok) {
-
-                  throw new Error(
-
-                    data.error ||
-
-                    data.details
-                      ?.errors
-                      ?.errorMessage ||
-
-                    "楽天APIエラー"
-
-                  );
-
-                }
-
-
-                return data;
-
-              }
-            );
-
-        }
+    const apiUrl =
+      new URL(
+        API_BASE_URL
       );
 
 
-    const results =
-      await Promise.all(
-        requests
-      );
-
-
-    let items = [];
-
-
-    results.forEach(
-      function(data) {
-
-        const pageItems =
-          data.Items ||
-          data.items ||
-          [];
-
-
-        if (
-          Array.isArray(
-            pageItems
-          )
-        ) {
-
-          items =
-            items.concat(
-              pageItems
-            );
-
-        }
-
-      }
+    apiUrl.searchParams.set(
+      "keyword",
+      keyword
     );
 
 
-    /* =================================
-    商品データを統一
-    ================================= */
-
-    const normalizedProducts =
-      items.map(
-        function(item) {
-
-          return (
-            item.Item ||
-            item
-          );
-
-        }
-      );
-
-
-    /* =================================
-    重複削除
-    ================================= */
-
-    const uniqueProducts =
-      [];
-
-
-    const urlSet =
-      new Set();
-
-
-    normalizedProducts.forEach(
-      function(product) {
-
-        const productUrl =
-          product.itemUrl ||
-          product.affiliateUrl ||
-          product.itemCode ||
-          "";
-
-
-        if (
-
-          productUrl &&
-
-          !urlSet.has(
-            productUrl
-          )
-
-        ) {
-
-          urlSet.add(
-            productUrl
-          );
-
-
-          uniqueProducts.push(
-            product
-          );
-
-        }
-
-      }
+    apiUrl.searchParams.set(
+      "page",
+      page
     );
 
 
-    /* 最大100件 */
+    /* ========================================
+       APIアクセス
+    ======================================== */
 
-    allProducts =
-      uniqueProducts.slice(
-        0,
-        MAX_PRODUCTS
+    const response =
+      await fetch(
+        apiUrl.toString(),
+        {
+          method: "GET"
+        }
       );
 
 
-    /* 商品なし */
+    /* ========================================
+       JSON取得
+    ======================================== */
+
+    const data =
+      await response.json();
+
+
+    /* ========================================
+       APIエラー
+    ======================================== */
 
     if (
-
-      allProducts.length === 0
-
+      !response.ok
     ) {
 
-      products.innerHTML = `
+      throw new Error(
+        data.error ||
+        "検索に失敗しました。"
+      );
 
-        <div class="message">
+    }
 
-          商品が見つかりませんでした。
+
+    /* ========================================
+       商品データ確認
+    ======================================== */
+
+    if (
+      !data.Items ||
+      !Array.isArray(
+        data.Items
+      )
+    ) {
+
+      throw new Error(
+        "商品データの形式が正しくありません。"
+      );
+
+    }
+
+
+    /* ========================================
+       状態更新
+    ======================================== */
+
+    currentKeyword =
+      keyword;
+
+
+    currentPage =
+      Number(
+        data.page ||
+        page
+      );
+
+
+    maxPage =
+      Number(
+        data.pageCount ||
+        1
+      );
+
+
+    /* ========================================
+       商品表示
+    ======================================== */
+
+    displayProducts(
+      data.Items
+    );
+
+
+    /* ========================================
+       件数表示
+    ======================================== */
+
+    const count =
+      Number(
+        data.count ||
+        0
+      );
+
+
+    const first =
+      Number(
+        data.first ||
+        0
+      );
+
+
+    const last =
+      Number(
+        data.last ||
+        0
+      );
+
+
+    setStatus(
+      `${count.toLocaleString()}件中 ${first}〜${last}件を表示しています。`,
+      "success"
+    );
+
+
+    /* ========================================
+       ページ情報
+    ======================================== */
+
+    pageInfo.textContent =
+      `${currentPage} / ${maxPage} ページ`;
+
+
+    /* ========================================
+       前へボタン
+    ======================================== */
+
+    prevButton.disabled =
+      currentPage <= 1;
+
+
+    /* ========================================
+       次へボタン
+    ======================================== */
+
+    nextButton.disabled =
+      currentPage >= maxPage;
+
+
+  } catch (
+    error
+  ) {
+
+
+    console.error(
+      error
+    );
+
+
+    setStatus(
+      `エラー：${error.message}`,
+      "error"
+    );
+
+
+    productList.innerHTML = "";
+
+
+    pageInfo.textContent =
+      `${page} ページ`;
+
+
+  } finally {
+
+
+    isLoading = false;
+
+    searchButton.disabled = false;
+
+
+  }
+
+}
+
+
+
+/* ========================================
+   商品表示
+======================================== */
+
+function displayProducts(
+  items
+) {
+
+
+  productList.innerHTML = "";
+
+
+  if (
+    items.length === 0
+  ) {
+
+    productList.innerHTML =
+      `
+      <div>
+        商品が見つかりませんでした。
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  items.forEach(
+    function(item) {
+
+
+      /* ====================================
+         商品URL
+      ==================================== */
+
+      const itemUrl =
+        item.itemUrl ||
+        "";
+
+
+      /* ====================================
+         商品名
+      ==================================== */
+
+      const itemName =
+        item.itemName ||
+        "商品名なし";
+
+
+      /* ====================================
+         商品価格
+      ==================================== */
+
+      const itemPrice =
+        Number(
+          item.itemPrice ||
+          0
+        );
+
+
+      /* ====================================
+         ショップ名
+      ==================================== */
+
+      const shopName =
+        item.shopName ||
+        "";
+
+
+      /* ====================================
+         商品画像
+      ==================================== */
+
+      let imageUrl = "";
+
+
+      if (
+        item.mediumImageUrls &&
+        item.mediumImageUrls.length > 0
+      ) {
+
+        const image =
+          item.mediumImageUrls[0];
+
+
+        if (
+          typeof image === "string"
+        ) {
+
+          imageUrl =
+            image;
+
+        } else if (
+          image.imageUrl
+        ) {
+
+          imageUrl =
+            image.imageUrl;
+
+        }
+
+      }
+
+
+      /* ====================================
+         カード作成
+      ==================================== */
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "product-card";
+
+
+      /* ====================================
+         HTML作成
+      ==================================== */
+
+      card.innerHTML =
+        `
+
+        <div
+          class="product-image-area"
+        >
+
+          <img
+            class="product-image"
+            src="${escapeHtml(imageUrl)}"
+            alt="${escapeHtml(itemName)}"
+          >
 
         </div>
 
-      `;
 
+        <div
+          class="product-info"
+        >
+
+
+          <div
+            class="product-name"
+          >
+
+            ${escapeHtml(itemName)}
+
+          </div>
+
+
+          <div
+            class="price"
+          >
+
+            ¥${itemPrice.toLocaleString()}
+
+          </div>
+
+
+          <div
+            class="shop-name"
+          >
+
+            ${escapeHtml(shopName)}
+
+          </div>
+
+
+          <div
+            class="button-area"
+          >
+
+
+            <a
+              class="product-link"
+              href="${escapeHtml(itemUrl)}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+
+              商品を見る
+
+            </a>
+
+
+            <button
+              class="room-button"
+              type="button"
+              data-url="${escapeHtml(itemUrl)}"
+            >
+
+              ROOMに投稿
+
+            </button>
+
+
+          </div>
+
+
+        </div>
+
+        `;
+
+
+      /* ====================================
+         ROOMボタン
+      ==================================== */
+
+      const roomButton =
+        card.querySelector(
+          ".room-button"
+        );
+
+
+      roomButton.addEventListener(
+        "click",
+        function() {
+
+          postToRoom(
+            itemUrl
+          );
+
+        }
+      );
+
+
+      /* ====================================
+         商品追加
+      ==================================== */
+
+      productList.appendChild(
+        card
+      );
+
+
+    }
+  );
+
+}
+
+
+
+/* ========================================
+   ROOM投稿
+======================================== */
+
+function postToRoom(
+  itemUrl
+) {
+
+
+  if (
+    !itemUrl
+  ) {
+
+    alert(
+      "商品URLを取得できませんでした。"
+    );
+
+    return;
+
+  }
+
+
+  /*
+   ----------------------------------------
+
+   現在は楽天ROOM投稿画面へ
+   商品URLを渡して開く方式です。
+
+   実際の楽天ROOM投稿URL形式に合わせて
+   次の段階で調整します。
+
+   ----------------------------------------
+  */
+
+
+  const roomUrl =
+    "https://room.rakuten.co.jp/";
+
+
+  window.open(
+    roomUrl,
+    "_blank"
+  );
+
+
+  /*
+   商品URLをクリップボードへコピー
+  */
+
+  if (
+    navigator.clipboard
+  ) {
+
+    navigator.clipboard.writeText(
+      itemUrl
+    )
+    .then(
+      function() {
+
+        alert(
+          "楽天ROOMを開きました。\n\n商品URLをコピーしました。\nROOM投稿画面で貼り付けてください。"
+        );
+
+      }
+    )
+    .catch(
+      function() {
+
+        alert(
+          "楽天ROOMを開きました。\n商品URL：\n" +
+          itemUrl
+        );
+
+      }
+    );
+
+  } else {
+
+    alert(
+      "商品URL：\n" +
+      itemUrl
+    );
+
+  }
+
+}
+
+
+
+/* ========================================
+   HTMLエスケープ
+======================================== */
+
+function escapeHtml(
+  value
+) {
+
+  return String(
+    value || ""
+  )
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+
+/* ========================================
+   ステータス表示
+======================================== */
+
+function setStatus(
+  message,
+  type
+) {
+
+
+  statusElement.textContent =
+    message;
+
+
+  statusElement.className =
+    "";
+
+
+  if (
+    type === "loading"
+  ) {
+
+    statusElement.classList.add(
+      "status-loading"
+    );
+
+  }
+
+
+  if (
+    type === "error"
+  ) {
+
+    statusElement.classList.add(
+      "status-error"
+    );
+
+  }
+
+
+  if (
+    type === "success"
+  ) {
+
+    statusElement.classList.add(
+      "status-success"
+    );
+
+  }
+
+}
+
+
+
+/* ========================================
+   検索ボタン
+======================================== */
+
+searchButton.addEventListener(
+  "click",
+  function() {
+
+
+    const keyword =
+      keywordInput.value.trim();
+
+
+    currentPage = 1;
+
+
+    searchProducts(
+      keyword,
+      currentPage
+    );
+
+
+  }
+);
+
+
+
+/* ========================================
+   Enterキー検索
+======================================== */
+
+keywordInput.addEventListener(
+  "keydown",
+  function(
+    event
+  ) {
+
+
+    if (
+      event.key === "Enter"
+    ) {
+
+      const keyword =
+        keywordInput.value.trim();
+
+
+      currentPage = 1;
+
+
+      searchProducts(
+        keyword,
+        currentPage
+      );
+
+    }
+
+
+  }
+);
+
+
+
+/* ========================================
+   前ページ
+======================================== */
+
+prevButton.addEventListener(
+  "click",
+  function() {
+
+
+    if (
+      currentPage <= 1
+    ) {
 
       return;
 
     }
 
 
-    /* 商品一覧を空にする */
-
-    products.innerHTML =
-      "";
-
-
-    /* 最初の50件 */
-
-    showProducts(
-      INITIAL_DISPLAY
+    searchProducts(
+      currentKeyword,
+      currentPage - 1
     );
 
-
-  } catch (error) {
-
-    console.error(
-      "商品検索エラー:",
-      error
-    );
-
-
-    products.innerHTML = `
-
-      <div class="message">
-
-        商品を取得できませんでした。
-
-        <br><br>
-
-        ${escapeHtml(
-          error.message
-        )}
-
-        <br><br>
-
-        少し時間をおいて、
-        もう一度検索してください。
-
-      </div>
-
-    `;
-
-
-  } finally {
-
-    searchButton.disabled =
-      false;
-
-
-    searchButton.textContent =
-      "検索";
 
   }
+);
 
-}
 
 
+/* ========================================
+   次ページ
+======================================== */
 
-/* =================================
-指定件数まで商品を表示
-================================= */
+nextButton.addEventListener(
+  "click",
+  function() {
 
-function showProducts(
-  count
-) {
-
-  const products =
-    document.getElementById(
-      "products"
-    );
-
-
-  const loadMoreArea =
-    document.getElementById(
-      "load-more-area"
-    );
-
-
-  const resultInfo =
-    document.getElementById(
-      "result-info"
-    );
-
-
-  const endIndex =
-    Math.min(
-
-      displayedCount +
-      count,
-
-      allProducts.length
-
-    );
-
-
-  for (
-
-    let i =
-      displayedCount;
-
-    i < endIndex;
-
-    i++
-
-  ) {
-
-    const product =
-      allProducts[i];
-
-
-    const card =
-      createProductCard(
-        product
-      );
-
-
-    products.appendChild(
-      card
-    );
-
-  }
-
-
-  displayedCount =
-    endIndex;
-
-
-  /* 表示件数 */
-
-  resultInfo.textContent =
-    `現在 ${displayedCount}件 / 最大 ${allProducts.length}件表示`;
-
-
-  /* まだ商品がある場合 */
-
-  if (
-
-    displayedCount <
-    allProducts.length
-
-  ) {
-
-    loadMoreArea.style.display =
-      "block";
-
-  } else {
-
-    loadMoreArea.style.display =
-      "none";
-
-  }
-
-}
-
-
-
-/* =================================
-もっと見る
-================================= */
-
-function showMoreProducts() {
-
-  const loadMoreButton =
-    document.getElementById(
-      "load-more"
-    );
-
-
-  loadMoreButton.disabled =
-    true;
-
-
-  loadMoreButton.textContent =
-    "読み込み中...";
-
-
-  setTimeout(
-    function() {
-
-      showProducts(
-        LOAD_MORE_COUNT
-      );
-
-
-      loadMoreButton.disabled =
-        false;
-
-
-      loadMoreButton.textContent =
-        "もっと見る";
-
-    },
-    100
-  );
-
-}
-
-
-
-/* =================================
-商品カード作成
-================================= */
-
-function createProductCard(
-  product
-) {
-
-  const itemName =
-    product.itemName ||
-    "商品名なし";
-
-
-  const rawPrice =
-    product.itemPrice;
-
-
-  let itemPrice =
-    "価格情報なし";
-
-
-  if (
-
-    rawPrice !== undefined &&
-
-    rawPrice !== null &&
-
-    rawPrice !== ""
-
-  ) {
-
-    itemPrice =
-      Number(
-        rawPrice
-      ).toLocaleString();
-
-  }
-
-
-  /* =================================
-  商品URL
-  ================================= */
-
-  const itemUrl =
-    product.affiliateUrl ||
-    product.itemUrl ||
-    "#";
-
-
-  /* =================================
-  商品画像
-  ================================= */
-
-  let imageUrl =
-    "";
-
-
-  if (
-
-    product.mediumImageUrls &&
-
-    product.mediumImageUrls.length > 0
-
-  ) {
-
-    const image =
-      product.mediumImageUrls[0];
-
-
-    imageUrl =
-      image.imageUrl ||
-      image;
-
-  }
-
-
-  /* mediumImageUrlsがない場合 */
-
-  if (
-
-    !imageUrl &&
-
-    product.imageFlag !== 0
-
-  ) {
 
     if (
-
-      product.smallImageUrls &&
-
-      product.smallImageUrls.length > 0
-
+      currentPage >= maxPage
     ) {
 
-      const image =
-        product.smallImageUrls[0];
-
-
-      imageUrl =
-        image.imageUrl ||
-        image;
+      return;
 
     }
 
-  }
 
-
-  /* 画像なし */
-
-  if (!imageUrl) {
-
-    imageUrl =
-      "data:image/svg+xml;charset=UTF-8," +
-
-      encodeURIComponent(`
-
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="400"
-          height="400"
-        >
-
-          <rect
-            width="100%"
-            height="100%"
-            fill="#eeeeee"
-          />
-
-          <text
-            x="50%"
-            y="50%"
-            text-anchor="middle"
-            dominant-baseline="middle"
-            fill="#999999"
-            font-size="20"
-          >
-
-            No Image
-
-          </text>
-
-        </svg>
-
-      `);
-
-  }
-
-
-  /* =================================
-  カード作成
-  ================================= */
-
-  const card =
-    document.createElement(
-      "div"
+    searchProducts(
+      currentKeyword,
+      currentPage + 1
     );
 
 
-  card.className =
-    "product";
-
-
-  card.innerHTML = `
-
-    <img
-      src="${escapeHtml(imageUrl)}"
-      alt="${escapeHtml(itemName)}"
-      loading="lazy"
-    >
-
-
-    <div class="product-info">
-
-
-      <div
-        class="product-name"
-      >
-
-        ${escapeHtml(itemName)}
-
-      </div>
-
-
-      <div
-        class="price"
-      >
-
-        ${itemPrice === "価格情報なし"
-
-          ? "価格情報なし"
-
-          : escapeHtml(itemPrice) + "円"
-
-        }
-
-      </div>
-
-
-      <a
-
-        href="${escapeHtml(itemUrl)}"
-
-        target="_blank"
-
-        rel="noopener noreferrer"
-
-      >
-
-        楽天市場で見る
-
-      </a>
-
-
-    </div>
-
-  `;
-
-
-  return card;
-
-}
-
-
-
-/* =================================
-HTMLエスケープ
-================================= */
-
-function escapeHtml(
-  text
-) {
-
-  return String(
-    text
-  )
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-
-
-/* =================================
-Enterキーで検索
-================================= */
-
-document
-  .getElementById(
-    "keyword"
-  )
-  .addEventListener(
-
-    "keydown",
-
-    function(event) {
-
-      if (
-
-        event.key ===
-        "Enter"
-
-      ) {
-
-        searchProducts();
-
-      }
-
-    }
-
-  );
+  }
+);
 
 </script>
 
-
 </body>
-
 </html>
