@@ -329,10 +329,106 @@ header p {
 
     font-size: 24px;
 
-  }
+  }/* ================================
+商品ボタン
+================================ */
+
+.product-buttons {
+
+  margin-top: auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
 
 }
 
+
+.product-buttons a,
+
+.product-buttons button {
+
+  width: 100%;
+
+  display: block;
+
+  text-align: center;
+
+  padding: 12px;
+
+  border-radius: 6px;
+
+  font-weight: bold;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+}
+
+
+.rakuten-button {
+
+  background: #bf0000;
+
+  color: white;
+
+  text-decoration: none;
+
+}
+
+
+.rakuten-button:hover {
+
+  background: #990000;
+
+}
+
+
+.copy-button {
+
+  background: white;
+
+  color: #555;
+
+  border: 1px solid #ccc;
+
+}
+
+
+.copy-button:hover {
+
+  background: #f3f3f3;
+
+}
+
+
+.room-button {
+
+  background: #ff6b00;
+
+  color: white;
+
+  border: none;
+
+}
+
+
+.room-button:hover {
+
+  background: #e85f00;
+
+}
+
+}
+
+
+
+
+
+  
 </style>
 
 </head>
@@ -759,19 +855,36 @@ async function searchProducts() {
             </div>
 
 
-            <a
+           <div class="product-buttons">
 
-              href="${escapeHtml(itemUrl)}"
+  <a
+    class="rakuten-button"
+    href="${escapeHtml(itemUrl)}"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    楽天市場で見る
+  </a>
 
-              target="_blank"
 
-              rel="noopener noreferrer"
+  <button
+    class="copy-button"
+    type="button"
+    data-url="${escapeHtml(itemUrl)}"
+  >
+    商品URLをコピー
+  </button>
 
-            >
 
-              楽天市場で見る
+  <button
+    class="room-button"
+    type="button"
+    data-url="${escapeHtml(itemUrl)}"
+  >
+    ROOMへ投稿する
+  </button>
 
-            </a>
+</div>
 
 
           </div>
@@ -782,6 +895,115 @@ async function searchProducts() {
         products
           .appendChild(card);
 
+        /* ================================
+商品URLコピー
+================================ */
+
+card
+  .querySelector(".copy-button")
+  .addEventListener(
+
+    "click",
+
+    async function() {
+
+      const url =
+        this.dataset.url;
+
+
+      try {
+
+        await navigator
+          .clipboard
+          .writeText(url);
+
+
+        const originalText =
+          this.textContent;
+
+
+        this.textContent =
+          "コピーしました！";
+
+
+        setTimeout(
+
+          () => {
+
+            this.textContent =
+              originalText;
+
+          },
+
+          2000
+
+        );
+
+      }
+
+      catch (error) {
+
+        alert(
+          "URLをコピーできませんでした。"
+        );
+
+      }
+
+    }
+
+  );
+
+
+/* ================================
+ROOMへ投稿
+================================ */
+
+card
+  .querySelector(".room-button")
+  .addEventListener(
+
+    "click",
+
+    async function() {
+
+      const url =
+        this.dataset.url;
+
+
+      /* 商品URLをコピー */
+
+      try {
+
+        await navigator
+          .clipboard
+          .writeText(url);
+
+      }
+
+      catch (error) {
+
+        console.log(
+          "URLコピー失敗"
+        );
+
+      }
+
+
+      /* 楽天市場の商品ページを開く */
+
+      window.open(
+
+        url,
+
+        "_blank",
+
+        "noopener,noreferrer"
+
+      );
+
+    }
+
+  );
 
       }
 
