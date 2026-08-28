@@ -417,41 +417,14 @@ header p {
 
 <script>
 
-
 /* =================================
-楽天API設定
-================================= */
-
-
-/*
-楽天Developersで取得した値を入力
-*/
-
-
-const APPLICATION_ID =
-  "5c5adddc-93ea-4dfb-99b2-f7ccaed8421f";
-
-
-const ACCESS_KEY =
-  "pk_hMMJxMIyYYb8KV3TbmWHBOo05VKcaDzmlTtUoemjoEE";
-
-
-/* =================================
-JSONPの管理
-================================= */
-
-let currentScript = null;
-
-
-/* =================================
-商品検索
+楽天商品検索
+Cloudflare Worker経由
 ================================= */
 
 async function searchProducts() {
 
-
   const keyword =
-
     document
       .getElementById("keyword")
       .value
@@ -472,7 +445,6 @@ async function searchProducts() {
 
 
   const products =
-
     document
       .getElementById("products");
 
@@ -490,177 +462,58 @@ async function searchProducts() {
   `;
 
 
-  /*
-  古いJSONPスクリプトを削除
-  */
-
-  if (currentScript) {
-
-    currentScript.remove();
-
-    currentScript = null;
-
-  }
-
-
-  /*
-  コールバック名を毎回変更
-  */
-
-  const callbackName =
-
-    "rakutenCallback_" +
-
-    Date.now();
-
-
-  /*
-  楽天市場 商品検索API
-  */
-
-  const params =
-
-    new URLSearchParams({
-
-      format: "json",
-
-      applicationId:
-        APPLICATION_ID,
-
-      accessKey:
-        ACCESS_KEY,
-
-      keyword:
-        keyword,
-
-      hits:
-        "20",
-
-      page:
-        "1",
-
-      availability:
-        "1",
-
-      formatVersion:
-        "2",
-
-      callback:
-        callbackName
-
-    });
-
-
-  const url =
-
-    "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701?"
-
-    +
-
-    params.toString();
-
-
-  console.log(
-    "楽天API URL:",
-    url
-  );
-
-
   try {
 
+    /* =================================
+    Cloudflare Worker
+    ================================= */
+
+    const apiUrl =
+  "https://rakuten-room.you626-m.workers.dev/api/search?keyword="
+  +
+  encodeURIComponent(keyword);
+
+
+    console.log(
+      "Worker API URL:",
+      apiUrl
+    );
+
+
+    /* Workerへアクセス */
+
+    const response =
+      await fetch(apiUrl);
+
+
+    /* JSON取得 */
 
     const data =
-
-      await new Promise(
-
-        function(resolve, reject) {
+      await response.json();
 
 
-          /*
-          コールバック関数を作成
-          */
+    /* Workerまたは楽天APIエラー */
 
-          window[callbackName] =
+    if (!response.ok) {
 
-            function(data) {
+      throw new Error(
 
+        data.error
 
-              /*
-              後片付け
-              */
+        ||
 
-              delete
-                window[callbackName];
+        data.details?.errorMessage
 
+        ||
 
-              if (currentScript) {
-
-                currentScript.remove();
-
-                currentScript = null;
-
-              }
-
-
-              resolve(data);
-
-            };
-
-
-          /*
-          scriptタグを作成
-          */
-
-          const script =
-
-            document.createElement(
-              "script"
-            );
-
-
-          script.src = url;
-
-
-          script.onerror =
-
-            function() {
-
-
-              delete
-                window[callbackName];
-
-
-              reject(
-
-                new Error(
-                  "楽天APIへの接続に失敗しました。"
-                )
-
-              );
-
-            };
-
-
-          /*
-          JSONP読み込み
-          */
-
-          currentScript = script;
-
-
-          document
-            .body
-            .appendChild(script);
-
-
-        }
+        "楽天APIへの接続に失敗しました。"
 
       );
 
+    }
 
-    /*
-    APIエラー確認
-    */
+
+    /* APIエラー確認 */
 
     if (data.error) {
 
@@ -677,13 +530,9 @@ async function searchProducts() {
     }
 
 
-    /*
+    /* =================================
     商品データ取得
-
-    formatVersion=2なので
-    data.Itemsではなく
-    data.itemsの場合にも対応
-    */
+    ================================= */
 
     const items =
 
@@ -698,9 +547,7 @@ async function searchProducts() {
       [];
 
 
-    /*
-    商品がない場合
-    */
+    /* 商品がない場合 */
 
     if (
 
@@ -712,7 +559,6 @@ async function searchProducts() {
 
     ) {
 
-
       products.innerHTML = `
 
         <div class="message">
@@ -723,32 +569,24 @@ async function searchProducts() {
 
       `;
 
-
       return;
 
     }
 
 
-    /*
-    商品一覧をクリア
-    */
+    /* 商品一覧をクリア */
 
     products.innerHTML = "";
 
 
-    /*
+    /* =================================
     商品カード作成
-    */
+    ================================= */
 
     items.forEach(
 
       function(item) {
 
-
-        /*
-        formatVersion 1 / 2
-        両方に対応
-        */
 
         const product =
 
@@ -763,9 +601,7 @@ async function searchProducts() {
           item;
 
 
-        /*
-        商品名
-        */
+        /* 商品名 */
 
         const itemName =
 
@@ -776,9 +612,7 @@ async function searchProducts() {
           "商品名なし";
 
 
-        /*
-        価格
-        */
+        /* 価格 */
 
         const itemPrice =
 
@@ -796,14 +630,13 @@ async function searchProducts() {
             "価格情報なし";
 
 
-        /*
-        商品URL
-
-        affiliateIdを指定していないため
-        通常の商品URLを使用
-        */
+        /* 商品URL */
 
         const itemUrl =
+
+          product.affiliateUrl
+
+          ||
 
           product.itemUrl
 
@@ -812,9 +645,7 @@ async function searchProducts() {
           "#";
 
 
-        /*
-        商品画像
-        */
+        /* 商品画像 */
 
         let imageUrl = "";
 
@@ -847,15 +678,15 @@ async function searchProducts() {
         }
 
 
-        /*
-        画像がない場合
-        */
+        /* 画像がない場合 */
 
         if (!imageUrl) {
 
           imageUrl =
 
-            "data:image/svg+xml;charset=UTF-8," +
+            "data:image/svg+xml;charset=UTF-8,"
+
+            +
 
             encodeURIComponent(
 
@@ -887,9 +718,7 @@ async function searchProducts() {
         }
 
 
-        /*
-        カード作成
-        */
+        /* カード作成 */
 
         const card =
 
@@ -986,9 +815,7 @@ async function searchProducts() {
 
     `;
 
-
   }
-
 
 }
 
@@ -1027,7 +854,6 @@ function escapeHtml(text) {
       "&#039;"
     );
 
-
 }
 
 
@@ -1054,7 +880,6 @@ document
 
         searchProducts();
 
-
       }
 
 
@@ -1062,9 +887,7 @@ document
 
   );
 
-
 </script>
-
 
 </body>
 
