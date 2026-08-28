@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 
 <head>
@@ -329,106 +330,10 @@ header p {
 
     font-size: 24px;
 
-  }/* ================================
-商品ボタン
-================================ */
-
-.product-buttons {
-
-  margin-top: auto;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 8px;
+  }
 
 }
 
-
-.product-buttons a,
-
-.product-buttons button {
-
-  width: 100%;
-
-  display: block;
-
-  text-align: center;
-
-  padding: 12px;
-
-  border-radius: 6px;
-
-  font-weight: bold;
-
-  font-size: 15px;
-
-  cursor: pointer;
-
-}
-
-
-.rakuten-button {
-
-  background: #bf0000;
-
-  color: white;
-
-  text-decoration: none;
-
-}
-
-
-.rakuten-button:hover {
-
-  background: #990000;
-
-}
-
-
-.copy-button {
-
-  background: white;
-
-  color: #555;
-
-  border: 1px solid #ccc;
-
-}
-
-
-.copy-button:hover {
-
-  background: #f3f3f3;
-
-}
-
-
-.room-button {
-
-  background: #ff6b00;
-
-  color: white;
-
-  border: none;
-
-}
-
-
-.room-button:hover {
-
-  background: #e85f00;
-
-}
-
-}
-
-
-
-
-
-  
 </style>
 
 </head>
@@ -511,604 +416,209 @@ header p {
 
 
 
+
 <script>
+/* =================================
+Cloudflare Worker設定
+================================= */
+const WORKER_API =
+  "https://rakuten-room.you626-m.workers.dev/api/search";
 
 /* =================================
-楽天商品検索
-Cloudflare Worker経由
+商品検索
 ================================= */
-
 async function searchProducts() {
-
   const keyword =
     document
       .getElementById("keyword")
       .value
       .trim();
 
-
-  /* キーワード未入力 */
-
   if (!keyword) {
-
-    alert(
-      "検索キーワードを入力してください。"
-    );
-
+    alert("検索キーワードを入力してください。");
     return;
-
   }
 
-
   const products =
-    document
-      .getElementById("products");
-
-
-  /* 検索中表示 */
+    document.getElementById("products");
 
   products.innerHTML = `
-
     <div class="message">
-
       商品を検索しています...
-
     </div>
-
   `;
 
-
   try {
-
-    /* =================================
-    Cloudflare Worker
-    ================================= */
-
     const apiUrl =
-  "https://rakuten-room.you626-m.workers.dev/api/search?keyword="
-  +
-  encodeURIComponent(keyword);
-
-
-    console.log(
-      "Worker API URL:",
-      apiUrl
-    );
-
-
-    /* Workerへアクセス */
+      WORKER_API +
+      "?keyword=" +
+      encodeURIComponent(keyword);
 
     const response =
       await fetch(apiUrl);
 
-
-    /* JSON取得 */
-
     const data =
       await response.json();
 
-
-    /* Workerまたは楽天APIエラー */
-
     if (!response.ok) {
-
       throw new Error(
-
-        data.error
-
-        ||
-
-        data.details?.errorMessage
-
-        ||
-
-        "楽天APIへの接続に失敗しました。"
-
+        data.error ||
+        data.details?.errors?.errorMessage ||
+        "商品検索に失敗しました。"
       );
-
     }
-
-
-    /* APIエラー確認 */
-
-    if (data.error) {
-
-      throw new Error(
-
-        data.error_description
-
-        ||
-
-        data.error
-
-      );
-
-    }
-
-
-    /* =================================
-    商品データ取得
-    ================================= */
 
     const items =
-
-      data.Items
-
-      ||
-
-      data.items
-
-      ||
-
+      data.Items ||
+      data.items ||
       [];
 
-
-    /* 商品がない場合 */
-
     if (
-
-      !Array.isArray(items)
-
-      ||
-
+      !Array.isArray(items) ||
       items.length === 0
-
     ) {
-
       products.innerHTML = `
-
         <div class="message">
-
           商品が見つかりませんでした。
-
         </div>
-
       `;
-
       return;
-
     }
-
-
-    /* 商品一覧をクリア */
 
     products.innerHTML = "";
 
-
-    /* =================================
-    商品カード作成
-    ================================= */
-
-    items.forEach(
-
-      function(item) {
-
-
-        const product =
-
-          item.Item
-
-          ||
-
-          item.item
-
-          ||
-
-          item;
-
-
-        /* 商品名 */
-
-        const itemName =
-
-          product.itemName
-
-          ||
-
-          "商品名なし";
-
-
-        /* 価格 */
-
-        const itemPrice =
-
-          product.itemPrice
-
-            ?
-
-            Number(
-              product.itemPrice
-            )
-            .toLocaleString()
-
-            :
-
-            "価格情報なし";
-
-
-        /* 商品URL */
-
-        const itemUrl =
-
-          product.affiliateUrl
-
-          ||
-
-          product.itemUrl
-
-          ||
-
-          "#";
-
-
-        /* 商品画像 */
-
-        let imageUrl = "";
-
-
-        if (
-
-          product.mediumImageUrls
-
-          &&
-
-          product.mediumImageUrls.length > 0
-
-        ) {
-
-
-          const image =
-
-            product
-              .mediumImageUrls[0];
-
-
-          imageUrl =
-
-            image.imageUrl
-
-            ||
-
-            image;
-
-        }
-
-
-        /* 画像がない場合 */
-
-        if (!imageUrl) {
-
-          imageUrl =
-
-            "data:image/svg+xml;charset=UTF-8,"
-
-            +
-
-            encodeURIComponent(
-
-              `<svg xmlns="http://www.w3.org/2000/svg"
-                width="400"
-                height="400">
-
-                <rect
-                  width="100%"
-                  height="100%"
-                  fill="#eeeeee"
-                />
-
-                <text
-                  x="50%"
-                  y="50%"
-                  text-anchor="middle"
-                  dominant-baseline="middle"
-                  fill="#999999"
-                  font-size="20"
-                >
-                  No Image
-                </text>
-
-              </svg>`
-
-            );
-
-        }
-
-
-        /* カード作成 */
-
-        const card =
-
-          document.createElement(
-            "div"
-          );
-
-
-        card.className =
-          "product";
-
-
-        card.innerHTML = `
-
-          <img
-
-            src="${escapeHtml(imageUrl)}"
-
-            alt="${escapeHtml(itemName)}"
-
-          >
-
-
-          <div class="product-info">
-
-
-            <div class="product-name">
-
-              ${escapeHtml(itemName)}
-
-            </div>
-
-
-            <div class="price">
-
-              ${escapeHtml(itemPrice)}円
-
-            </div>
-
-
-           <div class="product-buttons">
-
-  <a
-    class="rakuten-button"
-    href="${escapeHtml(itemUrl)}"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    楽天市場で見る
-  </a>
-
-
-  <button
-    class="copy-button"
-    type="button"
-    data-url="${escapeHtml(itemUrl)}"
-  >
-    商品URLをコピー
-  </button>
-
-
-  <button
-    class="room-button"
-    type="button"
-    data-url="${escapeHtml(itemUrl)}"
-  >
-    楽天ROOMに投稿する
-  </button>
-
-</div>
-
-
+    items.forEach(function(item) {
+      const product =
+        item.Item ||
+        item;
+
+      const itemName =
+        product.itemName ||
+        "商品名なし";
+
+      const rawPrice =
+        product.itemPrice;
+
+      const itemPrice =
+        rawPrice !== undefined &&
+        rawPrice !== null &&
+        rawPrice !== ""
+          ? Number(rawPrice).toLocaleString()
+          : "価格情報なし";
+
+      const itemUrl =
+        product.affiliateUrl ||
+        product.itemUrl ||
+        "#";
+
+      let imageUrl = "";
+
+      if (
+        product.mediumImageUrls &&
+        product.mediumImageUrls.length > 0
+      ) {
+        const image =
+          product.mediumImageUrls[0];
+
+        imageUrl =
+          image.imageUrl ||
+          image;
+      }
+
+      if (!imageUrl) {
+        imageUrl =
+          "data:image/svg+xml;charset=UTF-8," +
+          encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg"
+              width="400" height="400">
+              <rect width="100%" height="100%"
+                fill="#eeeeee"/>
+              <text x="50%" y="50%"
+                text-anchor="middle"
+                dominant-baseline="middle"
+                fill="#999999"
+                font-size="20">
+                No Image
+              </text>
+            </svg>
+          `);
+      }
+
+      const card =
+        document.createElement("div");
+
+      card.className =
+        "product";
+
+      card.innerHTML = `
+        <img
+          src="${escapeHtml(imageUrl)}"
+          alt="${escapeHtml(itemName)}"
+        >
+
+        <div class="product-info">
+          <div class="product-name">
+            ${escapeHtml(itemName)}
           </div>
 
-        `;
+          <div class="price">
+            ${escapeHtml(itemPrice)}円
+          </div>
 
+          <a
+            href="${escapeHtml(itemUrl)}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            楽天市場で見る
+          </a>
+        </div>
+      `;
 
-        products
-          .appendChild(card);
+      products.appendChild(card);
+    });
 
-        /* ================================
-商品URLコピー
-================================ */
-
-card
-  .querySelector(".copy-button")
-  .addEventListener(
-
-    "click",
-
-    async function() {
-
-      const url =
-        this.dataset.url;
-
-
-      try {
-
-        await navigator
-          .clipboard
-          .writeText(url);
-
-
-        const originalText =
-          this.textContent;
-
-
-        this.textContent =
-          "コピーしました！";
-
-
-        setTimeout(
-
-          () => {
-
-            this.textContent =
-              originalText;
-
-          },
-
-          2000
-
-        );
-
-      }
-
-      catch (error) {
-
-        alert(
-          "URLをコピーできませんでした。"
-        );
-
-      }
-
-    }
-
-  );
-
-
-/* ================================
-ROOMへ投稿
-================================ */
-
-card
-  .querySelector(".room-button")
-  .addEventListener(
-
-    "click",
-
-    async function() {
-
-      const url =
-        this.dataset.url;
-
-
-      /* 商品URLをコピー */
-
-      try {
-
-        await navigator
-          .clipboard
-          .writeText(url);
-
-      }
-
-      catch (error) {
-
-        console.log(
-          "URLコピー失敗"
-        );
-
-      }
-
-
-      /* 楽天市場の商品ページを開く */
-
-      window.open(
-
-        url,
-
-        "_blank",
-
-        "noopener,noreferrer"
-
-      );
-
-    }
-
-  );
-
-      }
-
-    );
-
-
-  }
-
-  catch (error) {
-
-
+  } catch (error) {
     console.error(
-      "楽天APIエラー:",
+      "商品検索エラー:",
       error
     );
 
-
     products.innerHTML = `
-
       <div class="message">
-
         商品を取得できませんでした。
-
         <br><br>
-
-        ${escapeHtml(
-          error.message
-        )}
-
+        ${escapeHtml(error.message)}
       </div>
-
     `;
-
   }
-
 }
-
 
 /* =================================
 HTMLエスケープ
 ================================= */
-
 function escapeHtml(text) {
-
-
   return String(text)
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
-
 
 /* =================================
 Enterキーで検索
 ================================= */
-
 document
   .getElementById("keyword")
   .addEventListener(
-
     "keydown",
-
     function(event) {
-
-
-      if (
-
-        event.key ===
-        "Enter"
-
-      ) {
-
-
+      if (event.key === "Enter") {
         searchProducts();
-
       }
-
-
     }
-
   );
-
 </script>
 
 </body>
